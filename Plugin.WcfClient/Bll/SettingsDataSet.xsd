@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="SettingsDataSet" targetNamespace="http://alphaomega.somee.com/ServiceDataSet.xsd" xmlns:mstns="http://alphaomega.somee.com/ServiceDataSet.xsd" xmlns="http://alphaomega.somee.com/ServiceDataSet.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="NotPublic" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="SettingsDataSet" msdata:IsDataSet="true" msdata:Locale="" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="SettingsDataSet" msprop:Generator_UserDSName="SettingsDataSet">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="Service" msprop:Generator_TableClassName="ServiceDataTable" msprop:Generator_TableVarName="tableService" msprop:Generator_TablePropName="Service" msprop:Generator_RowDeletingName="ServiceRowDeleting" msprop:Generator_RowChangingName="ServiceRowChanging" msprop:Generator_RowEvHandlerName="ServiceRowChangeEventHandler" msprop:Generator_RowDeletedName="ServiceRowDeleted" msprop:Generator_UserTableName="Service" msprop:Generator_RowChangedName="ServiceRowChanged" msprop:Generator_RowEvArgName="ServiceRowChangeEvent" msprop:Generator_RowClassName="ServiceRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="TreeId" msprop:Generator_ColumnVarNameInTable="columnTreeId" msprop:Generator_ColumnPropNameInRow="TreeId" msprop:Generator_ColumnPropNameInTable="TreeIdColumn" msprop:Generator_UserColumnName="TreeId" type="xs:int" />
+              <xs:element name="ServiceTypeId" msprop:Generator_ColumnVarNameInTable="columnServiceTypeId" msprop:Generator_ColumnPropNameInRow="ServiceTypeId" msprop:Generator_ColumnPropNameInTable="ServiceTypeIdColumn" msprop:Generator_UserColumnName="ServiceTypeId" type="xs:int" />
+              <xs:element name="Path" msprop:nullValue="_null" msprop:Generator_ColumnPropNameInRow="Path" msprop:Generator_ColumnVarNameInTable="columnPath" msprop:Generator_ColumnPropNameInTable="PathColumn" msprop:Generator_UserColumnName="Path" type="xs:string" minOccurs="0" />
+              <xs:element name="RegenerateConfig" msprop:Generator_ColumnVarNameInTable="columnRegenerateConfig" msprop:Generator_ColumnPropNameInRow="RegenerateConfig" msprop:Generator_ColumnPropNameInTable="RegenerateConfigColumn" msprop:Generator_UserColumnName="RegenerateConfig" type="xs:boolean" minOccurs="0" />
+              <xs:element name="Login" msprop:nullValue="_null" msprop:Generator_ColumnPropNameInRow="Login" msprop:Generator_ColumnVarNameInTable="columnLogin" msprop:Generator_ColumnPropNameInTable="LoginColumn" msprop:Generator_UserColumnName="Login" type="xs:string" minOccurs="0" />
+              <xs:element name="Password" msprop:nullValue="_null" msprop:Generator_ColumnPropNameInRow="Password" msprop:Generator_ColumnVarNameInTable="columnPassword" msprop:Generator_ColumnPropNameInTable="PasswordColumn" msprop:Generator_UserColumnName="Password" type="xs:string" minOccurs="0" />
+              <xs:element name="ProxyLogin" msprop:nullValue="_null" msprop:Generator_ColumnPropNameInRow="ProxyLogin" msprop:Generator_ColumnVarNameInTable="columnProxyLogin" msprop:Generator_ColumnPropNameInTable="ProxyLoginColumn" msprop:Generator_UserColumnName="ProxyLogin" type="xs:string" minOccurs="0" />
+              <xs:element name="ProxyPassword" msprop:nullValue="_null" msprop:Generator_ColumnPropNameInRow="ProxyPassword" msprop:Generator_ColumnVarNameInTable="columnProxyPassword" msprop:Generator_ColumnPropNameInTable="ProxyPasswordColumn" msprop:Generator_UserColumnName="ProxyPassword" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Tree" msprop:Generator_TableClassName="TreeDataTable" msprop:Generator_TableVarName="tableTree" msprop:Generator_TablePropName="Tree" msprop:Generator_RowDeletingName="TreeRowDeleting" msprop:Generator_RowChangingName="TreeRowChanging" msprop:Generator_RowEvHandlerName="TreeRowChangeEventHandler" msprop:Generator_RowDeletedName="TreeRowDeleted" msprop:Generator_UserTableName="Tree" msprop:Generator_RowChangedName="TreeRowChanged" msprop:Generator_RowEvArgName="TreeRowChangeEvent" msprop:Generator_RowClassName="TreeRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="TreeId" msdata:ReadOnly="true" msdata:AutoIncrement="true" msprop:Generator_ColumnVarNameInTable="columnTreeId" msprop:Generator_ColumnPropNameInRow="TreeId" msprop:Generator_ColumnPropNameInTable="TreeIdColumn" msprop:Generator_UserColumnName="TreeId" type="xs:int" />
+              <xs:element name="ParentTreeId" msprop:Generator_ColumnVarNameInTable="columnParentTreeId" msprop:Generator_ColumnPropNameInRow="ParentTreeId" msprop:Generator_ColumnPropNameInTable="ParentTreeIdColumn" msprop:Generator_UserColumnName="ParentTreeId" type="xs:int" minOccurs="0" />
+              <xs:element name="ElementTypeId" msprop:Generator_ColumnVarNameInTable="columnElementTypeId" msprop:Generator_ColumnPropNameInRow="ElementTypeId" msprop:Generator_ColumnPropNameInTable="ElementTypeIdColumn" msprop:Generator_UserColumnName="ElementTypeId" type="xs:unsignedByte" />
+              <xs:element name="OrderId" msprop:nullValue="0" msprop:Generator_ColumnPropNameInRow="OrderId" msprop:Generator_ColumnVarNameInTable="columnOrderId" msprop:Generator_ColumnPropNameInTable="OrderIdColumn" msprop:Generator_UserColumnName="OrderId" type="xs:int" default="0" />
+              <xs:element name="Name" msprop:Generator_ColumnVarNameInTable="columnName" msprop:Generator_ColumnPropNameInRow="Name" msprop:Generator_ColumnPropNameInTable="NameColumn" msprop:Generator_UserColumnName="Name" type="xs:string" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+    <xs:unique name="Constraint1">
+      <xs:selector xpath=".//mstns:Tree" />
+      <xs:field xpath="mstns:TreeId" />
+    </xs:unique>
+    <xs:keyref name="FK_Tree_Tree" refer="Constraint1" msdata:ConstraintOnly="true">
+      <xs:selector xpath=".//mstns:Tree" />
+      <xs:field xpath="mstns:ParentTreeId" />
+    </xs:keyref>
+    <xs:keyref name="FK_Tree_Service" refer="Constraint1" msdata:ConstraintOnly="true">
+      <xs:selector xpath=".//mstns:Service" />
+      <xs:field xpath="mstns:TreeId" />
+    </xs:keyref>
+  </xs:element>
+</xs:schema>
