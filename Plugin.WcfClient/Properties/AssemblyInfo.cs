@@ -17,7 +17,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("Release")]
 #endif
 [assembly: AssemblyCompany("Danila Korablin")]
-[assembly: AssemblyProduct("Plugin.WcfClient")]
+[assembly: AssemblyProduct("Plugin.WCF Client")]
 [assembly: AssemblyCopyright("Copyright © WcfClient authors Danila Korablin 2012-2024")]
 #endif
 
