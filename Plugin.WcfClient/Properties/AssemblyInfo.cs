@@ -1,7 +1,6 @@
 ﻿using System.Reflection;
 using System.Runtime.InteropServices;
 
-[assembly: ComVisible(false)]
 [assembly: Guid("6943c22a-2efe-4321-a793-7d4ab0f82a7d")]
 [assembly: System.CLSCompliant(true)]
 
@@ -9,16 +8,8 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyMetadata("ProjectUrl", "https://dkorablin.ru/project/Default.aspx?File=96")]
 #else
 
-[assembly: AssemblyTitle("Plugin.WcfClient")]
 [assembly: AssemblyDescription("WS\\WCF Client")]
-#if DEBUG
-[assembly: AssemblyConfiguration("Debug")]
-#else
-[assembly: AssemblyConfiguration("Release")]
-#endif
-[assembly: AssemblyCompany("Danila Korablin")]
-[assembly: AssemblyProduct("Plugin.WCF Client")]
-[assembly: AssemblyCopyright("Copyright © WcfClient authors Danila Korablin 2012-2024")]
+[assembly: AssemblyCopyright("Copyright © WcfClient authors Danila Korablin 2012-2025")]
 #endif
 
 /*if $(ConfigurationName) == Release (
