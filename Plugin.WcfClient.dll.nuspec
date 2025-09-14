@@ -22,7 +22,7 @@
 	</metadata>
 	<files>
 		<file src="readme.md" target="docs" />
-		<!--file src="bin\net20\Plugin.WcfClient.xml" target="xml" /-->
-		<file src="bin\net20\Plugin.WcfClient.dll" target="lib\net20" />
+		<!--file src="bin\v3.5\Plugin.WcfClient.xml" target="xml" /-->
+		<file src="bin\v3.5\Plugin.WcfClient.dll" target="lib\net20" />
 	</files>
 </package>
