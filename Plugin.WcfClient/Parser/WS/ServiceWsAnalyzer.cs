@@ -45,8 +45,8 @@ namespace Plugin.WcfClient.Parser.Ws
 			return null;
 		}
 
-		/// <summary>Создание процесса загрузки и компиляции клиента сервиса</summary>
-		/// <returns>Win32 процесс</returns>
+		/// <summary>Creating a process to download and compile the service client</summary>
+		/// <returns>Win32 process</returns>
 		protected override Process CreateProcess()
 		{
 			var serviceRow = this.Info.Row.ServiceRow;

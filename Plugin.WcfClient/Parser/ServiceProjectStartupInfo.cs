@@ -4,7 +4,7 @@ using Plugin.WcfClient.Bll;
 
 namespace Plugin.WcfClient.Parser
 {
-	/// <summary>Информация для инициализации и запуска WS\WCF проекта</summary>
+	/// <summary>Information for initializing and running a WS\WCF project</summary>
 	[Serializable]
 	internal class ServiceProjectStartupInfo
 	{
@@ -16,7 +16,7 @@ namespace Plugin.WcfClient.Parser
 
 		private String _projectPath;
 
-		/// <summary>Путь к папке проекта</summary>
+		/// <summary>Path to the project folder</summary>
 		public String ProjectPath
 		{
 			get
@@ -36,12 +36,13 @@ namespace Plugin.WcfClient.Parser
 			}
 		}
 
-		/// <summary>Проект уже загружен</summary>
+		/// <summary>Project already loaded</summary>
 		public Boolean IsProjectExists
 		{
 			get
 			{
 				if(Directory.Exists(this.ProjectPath))
+				{
 					switch(this.Row.ServiceRow.ServiceType)
 					{
 					case ServiceType.WS:
@@ -50,31 +51,31 @@ namespace Plugin.WcfClient.Parser
 						return File.Exists(this.AssemblyFilePath) && File.Exists(this.ConfigFilePath);
 					default:
 						throw new NotImplementedException(this.Row.ServiceRow.ServiceType.ToString());
-					} else
+					}
+				} else
 					return false;
-				
 			}
 		}
 
-		/// <summary>Путь к конфигурационному файлу по умолчанию</summary>
+		/// <summary>Path to the default configuration file</summary>
 		public String DefaultConfigFilePath => Path.Combine(this.ProjectPath, ServiceProjectStartupInfo.DefaultConfigFileName);
-		
-		/// <summary>Путь к конфигурационному файлу сервиса</summary>
+
+		/// <summary>Path to the service configuration file</summary>
 		public String ConfigFilePath => Path.Combine(this.ProjectPath, ServiceProjectStartupInfo.ProjectConfigFileName);
-		
-		/// <summary>Путь к .cs коду являющемся проксёй для общения с сервисом</summary>
+
+		/// <summary>Path to the .cs code that serves as a proxy for communicating with the service</summary>
 		public String ProxyFilePath => Path.Combine(this.ProjectPath, ServiceProjectStartupInfo.DefaultProxyFileName);
-		
-		/// <summary>Путь к сборке</summary>
+
+		/// <summary>Assembly path</summary>
 		public String AssemblyFilePath => Path.Combine(this.ProjectPath, ServiceProjectStartupInfo.ProjectAssemblyFileName);
 
-		/// <summary>Путь к папке с параметрами вызова методов сервиса</summary>
+		/// <summary>Path to the folder with service method call parameters</summary>
 		public String ParametersPath => Path.Combine(this.ProjectPath, ServiceProjectStartupInfo.ParametersFolderName);
 
-		/// <summary>Плагин</summary>
+		/// <summary>The plugin instance</summary>
 		public PluginWindows Plugin { get; private set; }
-		
-		/// <summary>Ряд в конфигурационном файле</summary>
+
+		/// <summary>Row in configuration file</summary>
 		public SettingsDataSet.TreeRow Row { get; private set; }
 
 		public ServiceProjectStartupInfo(PluginWindows plugin, SettingsDataSet.TreeRow row)

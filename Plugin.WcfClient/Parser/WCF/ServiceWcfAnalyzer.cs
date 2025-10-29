@@ -39,7 +39,7 @@ namespace Plugin.WcfClient.Parser.Wcf
 					typeof(DataContractAttribute).Assembly.Location
 				},
 					GenerateExecutable = false,
-					//CompilerOptions = "/platform:x86"//TODO: По умолчанию генерится 32 битная сборка???
+					//CompilerOptions = "/platform:x86"//TODO: By default, a 32-bit assembly is generated???
 				}, new String[] { this.Info.ProxyFilePath });
 
 			if(compilerResults.Errors.Count == 0)
@@ -68,8 +68,8 @@ namespace Plugin.WcfClient.Parser.Wcf
 			return result;
 		}
 
-		/// <summary>Создание процесса загрузки и компиляции клиента сервиса</summary>
-		/// <returns>Win32 процесс</returns>
+		/// <summary>Creating a process to download and compile the service client</summary>
+		/// <returns>Win32 process</returns>
 		protected override Process CreateProcess()
 		{
 			var serviceRow = base.Info.Row.ServiceRow;

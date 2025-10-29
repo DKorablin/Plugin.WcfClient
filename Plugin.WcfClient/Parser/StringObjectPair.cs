@@ -13,9 +13,9 @@ namespace Plugin.WcfClient.Parser
 			this.StringValue = stringValue;
 			this.ObjectValue = objectValue;
 		}
-		public override Boolean Equals(Object o)
+		public override Boolean Equals(Object obj)
 		{
-			StringObjectPair stringObjectPair = o as StringObjectPair;
+			StringObjectPair stringObjectPair = obj as StringObjectPair;
 			return stringObjectPair != null && stringObjectPair.StringValue.Equals(this.StringValue) && this.ObjectValue == stringObjectPair.ObjectValue;
 		}
 		public override Int32 GetHashCode()

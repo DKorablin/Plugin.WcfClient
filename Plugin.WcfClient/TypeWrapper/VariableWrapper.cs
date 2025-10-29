@@ -6,7 +6,7 @@ using System.Xml;
 
 namespace Plugin.WcfClient.Parser
 {
-	/// <summary>Информация о переменной для теста</summary>
+	/// <summary>Variable information for the test</summary>
 	[Serializable]
 	public class VariableWrapper
 	{
@@ -101,9 +101,9 @@ namespace Plugin.WcfClient.Parser
 			return result;
 		}
 
-		/// <summary>Загрузить значения параметров сервиса</summary>
-		/// <param name="xmlPath">Путь к XML файлу</param>
-		/// <param name="inputs">Массив параметров к которым подрузить значения</param>
+		/// <summary>Load service parameter values</summary>
+		/// <param name="xmlPath">Path to the XML file</param>
+		/// <param name="inputs">Array of parameters to which to load values</param>
 		public static void LoadData(String xmlPath, VariableWrapper[] inputs)
 		{
 			XmlReaderSettings settings = new XmlReaderSettings()
@@ -173,9 +173,9 @@ namespace Plugin.WcfClient.Parser
 			}
 		}
 
-		/// <summary>Сохранить значения параметров сервиса</summary>
-		/// <param name="xmlPath">Путь к XML файлу в который записать значения</param>
-		/// <param name="inputs">Массив параметров и значений параметров</param>
+		/// <summary>Save service parameter values</summary>
+		/// <param name="xmlPath">Path to the XML file to write the values ​​to</param>
+		/// <param name="inputs">Array of parameters and parameter values</param>
 		internal static void SaveData(String xmlPath, VariableWrapper[] inputs)
 		{
 			using(XmlWriter xmlWriter = XmlWriter.Create(xmlPath))
@@ -284,10 +284,10 @@ namespace Plugin.WcfClient.Parser
 
 		internal Object GetObject()
 		{
-			if(this.IsExpandable())
-				this.childVariables = this.GetChildVariables();
-			else
-				this.childVariables = null;
+			this.childVariables = this.IsExpandable()
+				? this.GetChildVariables()
+				: null;
+
 			return this.currentMember.GetObject(this._value, this.childVariables);
 		}
 
@@ -345,8 +345,7 @@ namespace Plugin.WcfClient.Parser
 		internal ValidationResult SetValue(String userValue)
 		{
 			String text = this._value;
-			String errorMessage;
-			if((this._value = this.declaredMember.ValidateAndCanonicalize(userValue, out errorMessage)) == null
+			if((this._value = this.declaredMember.ValidateAndCanonicalize(userValue, out String errorMessage)) == null
 				|| (this._isKey && TypeStrategy.NullRepresentation.Equals(this._value, StringComparison.Ordinal)))
 			{
 				this._value = text;

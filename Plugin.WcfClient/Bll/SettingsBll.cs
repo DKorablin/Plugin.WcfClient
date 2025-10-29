@@ -10,8 +10,8 @@ namespace Plugin.WcfClient.Bll
 	{
 		private readonly PluginWindows _plugin;
 
-		/// <summary>Создать экземпляр настроек и загрузить настройки из провайдера плагинов</summary>
-		/// <param name="plugin">Плагин</param>
+		/// <summary>Create a settings instance and load settings from the plugin provider</summary>
+		/// <param name="plugin">The current plugin instance</param>
 		public SettingsBll(PluginWindows plugin)
 			: base(0)
 		{
@@ -22,7 +22,7 @@ namespace Plugin.WcfClient.Bll
 					base.DataSet.ReadXml(stream);
 		}
 
-		/// <summary>Сохранить в настройках плагина</summary>
+		/// <summary>Save in plugin settings</summary>
 		public override void Save()
 		{
 			using(MemoryStream stream = new MemoryStream())
@@ -33,9 +33,9 @@ namespace Plugin.WcfClient.Bll
 			//base.Save();
 		}
 
-		/// <summary>Получить конфиг сервиса по идентификатору</summary>
-		/// <param name="serviceId">Идентификатор конфига сервиса</param>
-		/// <returns>Конфиг сервиса</returns>
+		/// <summary>Get service configuration by ID</summary>
+		/// <param name="serviceId">Service configuration ID</param>
+		/// <returns>Service configuration</returns>
 		public SettingsDataSet.ServiceRow GetClientRow(Int32 treeId)
 			=> base.DataSet.Service.FirstOrDefault(p => p.TreeId == treeId);
 
@@ -59,7 +59,7 @@ namespace Plugin.WcfClient.Bll
 					throw new ArgumentException("Can't move to a client node");
 			}
 
-			if(row.ParentTreeIDI != parentTreeId)//Он уже в этом узле
+			if(row.ParentTreeIDI != parentTreeId)//He's already in this node.
 			{
 				row.BeginEdit();
 				row.ParentTreeIDI = parentTreeId;
@@ -67,9 +67,9 @@ namespace Plugin.WcfClient.Bll
 			}
 		}
 
-		/// <summary>Изменить путь к проекту</summary>
-		/// <param name="treeRow">Ряд настроек сервиса, который необходимо изменить</param>
-		/// <param name="path">Путь к папке с проектом сервиса</param>
+		/// <summary>Change project path</summary>
+		/// <param name="treeRow">Row of service settings to change</param>
+		/// <param name="path">Path to the service project folder</param>
 		public void ModifyClient(SettingsDataSet.TreeRow treeRow, ServiceType serviceType, String proxyLogin, String proxyPassword)
 		{
 			if(treeRow.ElementType != ElementType.Client)
@@ -105,12 +105,12 @@ namespace Plugin.WcfClient.Bll
 			this.Save();
 		}
 
-		/// <summary>Изменить ряд настроек сервиса</summary>
-		/// <param name="serviceId">Идентификатор настроек сервиса или null, если его необходимо добавить</param>
-		/// <param name="type">Тип сервиса</param>
-		/// <param name="address">Адрес сервиса</param>
-		/// <param name="path">Путь к проекту сервиса на файловой системе</param>
-		/// <returns>Изменённый ряд настроек сервиса</returns>
+		/// <summary>Change a set of service settings</summary>
+		/// <param name="serviceId">The service settings ID, or null if needed</param>
+		/// <param name="type">Service type</param>
+		/// <param name="address">Service address</param>
+		/// <param name="path">Path to the service project on the file system</param>
+		/// <returns>The changed set of service settings</returns>
 		public SettingsDataSet.TreeRow ModifyTreeNode(Int32? treeId, Int32? parentTreeId, ElementType elementType, String name)
 		{
 			if(String.IsNullOrEmpty(name))
@@ -138,10 +138,10 @@ namespace Plugin.WcfClient.Bll
 			return row;
 		}
 
-		/// <summary>Изменить путь до сервиса</summary>
-		/// <param name="row">Ряд сервиса</param>
-		/// <param name="address">Новое наименование</param>
-		/// <returns>Результат смены</returns>
+		/// <summary>Change service path</summary>
+		/// <param name="row">Service row</param>
+		/// <param name="address">New name</param>
+		/// <returns>Change result</returns>
 		public Boolean ModifyTreeNodeAddress(SettingsDataSet.TreeRow row, String address)
 		{
 			_ = row ?? throw new ArgumentNullException(nameof(row));
@@ -159,8 +159,8 @@ namespace Plugin.WcfClient.Bll
 			return result;
 		}
 
-		/// <summary>Удалить узел дерева со всеми дочерними узлами</summary>
-		/// <param name="row">Ряд дерева для удаления</param>
+		/// <summary>Delete a tree node and all its child nodes</summary>
+		/// <param name="row">The tree row to delete</param>
 		public void RemoveNode(SettingsDataSet.TreeRow row)
 		{
 			_ = row ?? throw new ArgumentNullException(nameof(row));
@@ -176,12 +176,12 @@ namespace Plugin.WcfClient.Bll
 				this.RemoveClient(row);
 				break;
 			default:
-				throw new NotImplementedException(String.Format("Element with type {0} not implemented", row.ElementType));
+				throw new NotImplementedException($"Element with type {row.ElementType} not implemented");
 			}
 		}
 
-		/// <summary>Удалить узел клиента и настройки клиента</summary>
-		/// <param name="treeRow">Ряд дерева для удаления</param>
+		/// <summary>Delete client node and client settings</summary>
+		/// <param name="treeRow">Tree row to delete</param>
 		private void RemoveClient(SettingsDataSet.TreeRow treeRow)
 		{
 			_ = treeRow ?? throw new ArgumentNullException(nameof(treeRow));
@@ -189,7 +189,7 @@ namespace Plugin.WcfClient.Bll
 			if(treeRow.ElementType == ElementType.Client)
 			{
 				SettingsDataSet.ServiceRow clientRow = this.GetClientRow(treeRow.TreeId)
-					?? throw new ApplicationException(String.Format("Row with client ID {0} not found", treeRow.TreeId));
+					?? throw new ApplicationException($"Row with client ID {treeRow.TreeId} not found");
 
 				base.DataSet.Service.RemoveServiceRow(clientRow);
 

@@ -35,9 +35,7 @@ namespace Plugin.WcfClient.Parser
 				return null;
 
 			Type type = asm.GetType(typeName);
-			return type == null
-				? Type.GetType(typeName)
-				: type;
+			return type ?? Type.GetType(typeName);
 		}
 	}
 }

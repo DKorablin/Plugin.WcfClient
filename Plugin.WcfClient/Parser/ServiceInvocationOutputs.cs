@@ -1,5 +1,4 @@
 ﻿using System;
-using Plugin.WcfClient.UI.WCF;
 
 namespace Plugin.WcfClient.Parser
 {

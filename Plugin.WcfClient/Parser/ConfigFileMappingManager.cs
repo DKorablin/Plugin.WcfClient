@@ -10,7 +10,7 @@ namespace Plugin.WcfClient.Parser
 		private static String savedConfigFolder = Path.Combine(ToolingEnvironment.SavedDataBase, "CachedConfig");
 		private static String mappingFilePath = Path.Combine(ConfigFileMappingManager.savedConfigFolder, "AddressToConfigMapping.xml");
 		private static ConfigFileMappingManager configFileManager;
-		private IDictionary<String, String> addressToFileEntries = new Dictionary<String, String>();
+		private readonly IDictionary<String, String> addressToFileEntries = new Dictionary<String, String>();
 
 		private ConfigFileMappingManager()
 			=> this.ReadFromMappingFile();
@@ -26,7 +26,7 @@ namespace Plugin.WcfClient.Parser
 				String value = Path.Combine(ConfigFileMappingManager.savedConfigFolder, path);
 				this.addressToFileEntries.Add(address, value);
 
-				ExceptionUtility.InvokeFSAction(delegate { this.WriteToMappingFile(); });
+				ExceptionUtility.InvokeFSAction(this.WriteToMappingFile);
 			}
 		}
 
@@ -34,14 +34,14 @@ namespace Plugin.WcfClient.Parser
 		{
 			this.addressToFileEntries.Clear();
 
-			ExceptionUtility.InvokeFSAction(delegate { Directory.Delete(ConfigFileMappingManager.savedConfigFolder, true); });
+			ExceptionUtility.InvokeFSAction(() => Directory.Delete(ConfigFileMappingManager.savedConfigFolder, true));
 		}
 
 		public void DeleteConfigFileMapping(String address)
 		{
 			if(this.addressToFileEntries.ContainsKey(address))
 			{
-				ExceptionUtility.InvokeFSAction(delegate
+				ExceptionUtility.InvokeFSAction(() =>
 				{
 					File.Delete(this.addressToFileEntries[address]);
 					this.WriteToMappingFile();
@@ -66,13 +66,14 @@ namespace Plugin.WcfClient.Parser
 			if(!File.Exists(ConfigFileMappingManager.mappingFilePath))
 				return;
 
-			XmlDocument xmlDocument = new XmlDocument();
+			XmlDocument xmlDocument = new XmlDocument()
+			{
+				XmlResolver = null,
+			};
+
 			try
 			{
-				if(!ExceptionUtility.InvokeFSAction(delegate
-				{
-					xmlDocument.Load(ConfigFileMappingManager.mappingFilePath);
-				}))
+				if(!ExceptionUtility.InvokeFSAction(() => xmlDocument.Load(ConfigFileMappingManager.mappingFilePath)))
 					return;
 			} catch(XmlException)
 			{
@@ -86,7 +87,11 @@ namespace Plugin.WcfClient.Parser
 
 		private void WriteToMappingFile()
 		{
-			XmlDocument xmlDocument = new XmlDocument();
+			XmlDocument xmlDocument = new XmlDocument()
+			{
+				XmlResolver = null,
+			};
+
 			xmlDocument.AppendChild(xmlDocument.CreateElement("Mapping"));
 			foreach(KeyValuePair<String, String> current in this.addressToFileEntries)
 			{

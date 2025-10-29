@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing.Design;
 using System.Windows.Forms;
 using Microsoft.VisualStudio.VirtualTreeGrid;
 using Plugin.WcfClient.UI.WCF;
-using Plugin.WcfClient.Extensions;
-using System.Reflection;
-using System.Linq;
-using System.Threading;
 
 namespace Plugin.WcfClient.Parser
 {
@@ -23,9 +18,9 @@ namespace Plugin.WcfClient.Parser
 
 		private sealed class ChoiceContainer
 		{
-			private ParameterTreeAdapter _branch;
-			private Int32 _column;
-			private Int32 _row;
+			private readonly ParameterTreeAdapter _branch;
+			private readonly Int32 _column;
+			private readonly Int32 _row;
 
 			[TypeConverter(typeof(ChoiceConverter))]
 			public String Choice
@@ -71,7 +66,6 @@ namespace Plugin.WcfClient.Parser
 			public String DummyProperty { get { return null; } }
 		}
 
-		#region Fields
 		internal const Int32 NumColumns = 3;
 		private ParameterTreeAdapter[] _children;
 		private ParameterTreeAdapter _parent;
@@ -80,7 +74,6 @@ namespace Plugin.WcfClient.Parser
 		private VariableWrapper[] _variables;
 		private ITree _virtualTree;
 		private VirtualTreeControl _virtualTreeControl;
-		#endregion Fields
 
 		public event BranchModificationEventHandler OnBranchModification;
 
@@ -103,7 +96,7 @@ namespace Plugin.WcfClient.Parser
 
 		public Int32 VisibleItemCount => this._variables.Length;
 
-		internal ParameterTreeAdapter(VirtualTreeControl treeCtrl, VariableWrapper[] variables, bool readOnly, ParameterTreeAdapter parent)
+		internal ParameterTreeAdapter(VirtualTreeControl treeCtrl, VariableWrapper[] variables, Boolean readOnly, ParameterTreeAdapter parent)
 		{
 			this._virtualTree = (ITree)treeCtrl.MultiColumnTree;
 			this._virtualTreeControl = treeCtrl;

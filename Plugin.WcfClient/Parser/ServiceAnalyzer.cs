@@ -50,9 +50,8 @@ namespace Plugin.WcfClient.Parser
 			Int32 startProgress = this.GetIntValueOfProgress(this._startProgress, this._progressRange, 0.1f);
 			Int32 endProgress = this.GetIntValueOfProgress(this._startProgress, this._progressRange, 0.5f);
 
-			String outMessage;
-			Boolean result = this.GenerateProxyAndConfig(startProgress, endProgress, out outMessage, out errorMessage);
-			if(!String.IsNullOrEmpty(outMessage))//Пишу исходящие тексты от результата выполнения внешнего процесса (иногда там могут быть Warning'и даже при успешном создании сборки)
+			Boolean result = this.GenerateProxyAndConfig(startProgress, endProgress, out String outMessage, out errorMessage);
+			if(!String.IsNullOrEmpty(outMessage))//I write output texts from the results of an external process (sometimes there may be Warnings even if the build was created successfully)
 				this.Info.Plugin.Trace.TraceEvent(TraceEventType.Information, 10, outMessage);
 
 			if(result)
@@ -112,16 +111,16 @@ namespace Plugin.WcfClient.Parser
 			try
 			{
 				String privateBinPath = Assembly.GetExecutingAssembly().Location;
-				if(String.IsNullOrEmpty(privateBinPath))//Т.к. модуль может лежать в другом месте
+				if(String.IsNullOrEmpty(privateBinPath))//Because the module may be located in a different place
 					if(Assembly.GetEntryAssembly() == null)
 						privateBinPath = Process.GetCurrentProcess().MainModule.FileName;
-					else//Если плагин к EnvDTE
+					else//If the plugin is for EnvDTE
 						privateBinPath = Assembly.GetEntryAssembly().Location;
 
 				AppDomain result = this.CreateAppDomain(Path.GetDirectoryName(privateBinPath));
-				//TODO: Если плагин загружен через память, то Location будет пустой.
-				//TODO: Как один и вариантов, сохранить текущую сборку на диске и прописать путь к ней.
-				//TODO: Или взять путь к сборке, который передаёт провайдер плагинов
+				//TODO: If the plugin is loaded from memory, the Location will be empty.
+				//TODO: One option is to save the current build to disk and specify the path to it.
+				//TODO: Or use the build path passed by the plugin provider.
 
 				try
 				{
@@ -146,7 +145,7 @@ namespace Plugin.WcfClient.Parser
 					foreach(KeyValuePair<ChannelEndpointElement, ClientEndpointInfo> current in services)
 						current.Value.EndpointConfigurationName = current.Key.Name;
 				} catch
-				{//TODO: Не проверено на Fatal Exception'ы
+				{//TODO: Not checked for Fatal Exceptions
 					ServiceAnalyzer.UnloadAppDomain(result);
 					throw;
 				}
@@ -166,7 +165,7 @@ namespace Plugin.WcfClient.Parser
 		}
 
 		public static void CopyConfigFile(String oldPath, String newPath)
-			=> ExceptionUtility.InvokeFSAction(delegate { File.Copy(oldPath, newPath, true); });
+			=> ExceptionUtility.InvokeFSAction(() => File.Copy(oldPath, newPath, true));
 
 		public static void UnloadAppDomain(AppDomain domain)
 		{
@@ -177,11 +176,10 @@ namespace Plugin.WcfClient.Parser
 			{
 				MessageBox.Show(exc.Message, "CannotUnloadAppDomainException", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 			}
-			domain = null;
 		}
 
 		private static void DeleteProjectFolder(String projectDirectory)
-			=> ExceptionUtility.InvokeFSAction(delegate { Directory.Delete(projectDirectory, true); });
+			=> ExceptionUtility.InvokeFSAction(() => Directory.Delete(projectDirectory, true));
 
 		/// <summary>Creates a new AppDomain based on the parent AppDomains Evidence and AppDomainSetup</summary>
 		/// <returns>A newly created AppDomain</returns>
@@ -198,7 +196,7 @@ namespace Plugin.WcfClient.Parser
 			return domain;
 		}
 
-		protected virtual Boolean GenerateProxyAndConfig(Int32 startProgressPosition, Int32 endProgressPostition, out String successMessage, out String errorMessage)
+		protected virtual Boolean GenerateProxyAndConfig(Int32 startProgressPosition, Int32 endProgressPosition, out String successMessage, out String errorMessage)
 		{
 			if(!Directory.Exists(this.Info.ProjectPath))
 				Directory.CreateDirectory(this.Info.ProjectPath);
@@ -215,19 +213,19 @@ namespace Plugin.WcfClient.Parser
 						errorMessage = null;
 						return false;
 					}
-					if(startProgressPosition < endProgressPostition)
+					if(startProgressPosition < endProgressPosition)
 						this._worker.ReportProgress(startProgressPosition++);
 
 					Thread.Sleep(50);
 					milliseconds += 50;
 					if(milliseconds > 10000)
-						break;//Есть процессы, где пока не прочитаешь StandardOutput, процесс не выйдет. Поэтому нужен таймаут, дабы прочитать Output и надеятся на выход процесса
+						break;//There are processes where the process won't exit until StandardOutput is read. Therefore, a timeout is needed to read Output and hope for the process to exit.
 				}
 				successMessage = process.StandardOutput.ReadToEnd();
 				errorMessage = process.StandardError.ReadToEnd();
 				isSuccess = process.HasExited && process.ExitCode == 0 && String.IsNullOrEmpty(errorMessage);
-				//При ошибки генерации WSDL из WCF сервиса, ExitCode==0.
-				//TODO: Но, есть ошибки, при которых, файлы создаются и сервис работоспособен.
+				//If there is an error generating WSDL from a WCF service, ExitCode==0.
+				//TODO: However, there are errors in which files are created and the service remains operational.
 
 				/*switch(info.Row.ServiceType)
 				{
@@ -245,8 +243,8 @@ namespace Plugin.WcfClient.Parser
 			return isSuccess;
 		}
 
-		/// <summary>Создание процесса загруски и компиляции клиента сервиса</summary>
-		/// <returns>Win32 процесс</returns>
+		/// <summary>Creating the process for loading and compiling the service client</summary>
+		/// <returns>Win32 process</returns>
 		protected abstract Process CreateProcess();
 
 		/*private static StringBuilder SvcUtilError;

@@ -10,21 +10,21 @@ namespace Plugin.WcfClient.UI
 	{
 		private static readonly Color ExceptionColor = SystemColors.GrayText;
 
-		/// <summary>Изображения узлов дерева</summary>
+		/// <summary>Tree node images</summary>
 		public enum TreeImageList
 		{
-			/// <summary>Папка</summary>
+			/// <summary>Folder</summary>
 			Folder = 0,
 			Application = 1,
-			/// <summary>Сервис</summary>
+			/// <summary>Service</summary>
 			Endpoint = 2,
 
 			Contract = 3,
-			/// <summary>Конфигурационный файл</summary>
+			/// <summary>Configuration file</summary>
 			File = 4,
-			/// <summary>Метод</summary>
+			/// <summary>Method</summary>
 			Operation = 5,
-			/// <summary>Узел с ошибкой</summary>
+			/// <summary>Error node</summary>
 			Error = 6,
 		}
 
@@ -64,14 +64,14 @@ namespace Plugin.WcfClient.UI
 			{
 				_ = value ?? throw new ArgumentNullException(nameof(value));
 
-				if(this.NodeType == TreeImageList.Endpoint)//TODO: В этом типе нода может быть как сама ссылка, так и тип сервиса...
+				if(this.NodeType == TreeImageList.Endpoint)//TODO: This type of node can contain either the link itself or the service type...
 					this.Tag.Endpoint = value;
 				else
-					throw new InvalidOperationException("Ivalid node type " + this.NodeType.ToString());
+					throw new InvalidOperationException("Invalid node type " + this.NodeType.ToString());
 			}
 		}
 
-		/// <summary>Получить ряд настроек элемента дерева</summary>
+		/// <summary>Get a number of tree item settings</summary>
 		public SettingsDataSet.TreeRow Settings
 		{
 			get { return this.Tag.Row; }
@@ -79,14 +79,14 @@ namespace Plugin.WcfClient.UI
 			{
 				_ = value ?? throw new ArgumentNullException(nameof(value));
 
-				if(this.NodeType==TreeImageList.Folder || this.NodeType == TreeImageList.Endpoint)//TODO: В этом типе нода может быть как сама ссылка, так и тип сервиса...
+				if(this.NodeType==TreeImageList.Folder || this.NodeType == TreeImageList.Endpoint)//TODO: This type of node can contain either the link itself or the service type...
 					this.Tag.Row = value;
 				else
 					throw new InvalidOperationException("Invalid node type " + this.NodeType.ToString());
 			}
 		}
 
-		/// <summary>Конфигурационный файл сервиса</summary>
+		/// <summary>Service configuration file</summary>
 		public String ConfigPath
 		{
 			get { return this.Tag.ConfigPath; }
@@ -97,19 +97,19 @@ namespace Plugin.WcfClient.UI
 				else if(this.NodeType == TreeImageList.File)
 					this.Tag.ConfigPath = value;
 				else
-					throw new InvalidOperationException("Ivalid node type " + this.NodeType.ToString());
+					throw new InvalidOperationException("Invalid node type " + this.NodeType.ToString());
 			}
 		}
 
-		/// <summary>Получить тип узла</summary>
+		/// <summary>Get the node type</summary>
 		public TreeImageList NodeType
 		{
 			get => (TreeImageList)base.ImageIndex;
 			set => base.SelectedImageIndex = base.ImageIndex = (Int32)value;
 		}
 
-		/// <summary>Проверка на содержание ошибки в дереве</summary>
-		/// <returns>В узле содержится текст ошибки</returns>
+		/// <summary>Checking if the tree contains an error</summary>
+		/// <returns>The node contains the error text</returns>
 		public Boolean IsError => base.ForeColor == ServiceTreeNode.ExceptionColor;
 
 		public ServiceTreeNode()
@@ -158,23 +158,23 @@ namespace Plugin.WcfClient.UI
 				this.Nodes.Add(new ServiceTreeNode());//Adding dummy node
 				break;
 			default:
-				throw new NotImplementedException(String.Format("Element with type {0} not implemented", row.ElementType));
+				throw new NotImplementedException($"Element with type {row.ElementType} not implemented");
 			}
 
 			this.Settings = row;
 		}
 
-		/// <summary>TODO: Косяк. В NodeType=Endpoint может быть как сервис, так и ссылка</summary>
+		/// <summary>TODO: Bugs. NodeType=Endpoint can be either a service or a link.</summary>
 		/// <returns></returns>
 		public Boolean IsRealEndpoint()
-			=> this.NodeType == TreeImageList.Endpoint && this.Settings != null;
+		=> this.NodeType == TreeImageList.Endpoint && this.Settings != null;
 
-		/// <summary>Проект находится в выгруженно сосотоянии</summary>
+		/// <summary>The project is unloaded.</summary>
 		/// <returns></returns>
 		public Boolean IsProjectUnloaded()
-			=> this.IsRealEndpoint() && this.Project == null;
+		=> this.IsRealEndpoint() && this.Project == null;
 
-		/// <summary>Выгрузить впроекта из UI</summary>
+		/// <summary>Unload the project from the UI.</summary>
 		public void UnloadProject()
 		{
 			this.Project = null;
@@ -183,8 +183,8 @@ namespace Plugin.WcfClient.UI
 			base.Collapse();
 		}
 
-		/// <summary>Загрузить проект в UI</summary>
-		/// <param name="project">Проект для загрузки в UI</param>
+		/// <summary>Load project into UI</summary>
+		/// <param name="project">Project to load into UI</param>
 		public void LoadProject(ServiceProject project)
 		{
 			if(this.NodeType != TreeImageList.Endpoint)
@@ -210,9 +210,8 @@ namespace Plugin.WcfClient.UI
 					this.Nodes.Add(nodeEndpoint);
 					if(!client.Valid)
 					{
-						String errorMessage = client.InvalidReason == null
-							? "This service contract is not supported in the WCF Test Client. Refer to product documentation for a list of supported features."
-							: client.InvalidReason;
+						String errorMessage = client.InvalidReason
+							?? "This service contract is not supported in the WCF Test Client. Refer to product documentation for a list of supported features.";
 						this.SetError(null);
 						this.ToolTipText = errorMessage;
 					}
@@ -223,9 +222,8 @@ namespace Plugin.WcfClient.UI
 						nodeEndpoint.Nodes.Add(nodeMethod);
 						if(!client.Valid || !method.Valid)
 						{
-							String errorMessage = client.InvalidReason == null
-								? "This operation is not supported in the WCF Test Client."
-								: client.InvalidReason;
+							String errorMessage = client.InvalidReason
+								?? "This operation is not supported in the WCF Test Client.";
 							nodeMethod.SetError(null);
 							nodeMethod.ToolTipText = errorMessage;
 						}
@@ -246,8 +244,8 @@ namespace Plugin.WcfClient.UI
 			base.ExpandAll();
 		}
 
-		/// <summary>Написать ошибку на узел дерева</summary>
-		/// <param name="errorMessage">Текст ошибки</param>
+		/// <summary>Write an error to a tree node</summary>
+		/// <param name="errorMessage">Error text</param>
 		public void SetError(String errorMessage)
 		{
 			base.ForeColor = ServiceTreeNode.ExceptionColor;
@@ -256,7 +254,7 @@ namespace Plugin.WcfClient.UI
 				base.Text = errorMessage;
 		}
 
-		/// <summary>Рекурсивный поиск проекта</summary>
+		/// <summary>Recursive project search</summary>
 		/// <returns></returns>
 		public ServiceProject FindProject()
 		{
@@ -268,9 +266,9 @@ namespace Plugin.WcfClient.UI
 				return null;
 		}
 
-		/// <summary>Рекурсивно поискать по дереву до рута настройки</summary>
-		/// <param name="node">Узел дерева</param>
-		/// <returns>Настройки сервиса</returns>
+		/// <summary>Recursively search the tree to the root settings</summary>
+		/// <param name="node">Tree node</param>
+		/// <returns>Service settings</returns>
 		public SettingsDataSet.TreeRow FindSettings()
 		{
 			ServiceTreeNode node = this;
@@ -279,7 +277,7 @@ namespace Plugin.WcfClient.UI
 				TreeImageList imageIndex = node.NodeType;
 				if(imageIndex == TreeImageList.Endpoint || imageIndex == TreeImageList.Folder)
 					break;
-				node = node.Parent;//Итеративно добираюсь до рута
+				node = node.Parent;//I get to the root iteratively
 			}
 
 			return node?.Tag.Row;

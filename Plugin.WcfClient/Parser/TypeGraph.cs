@@ -5,9 +5,12 @@ namespace Plugin.WcfClient.Parser
 {
 	public class TypeGraph
 	{
-		private IDictionary<String, IList<StringPair>> adjacencyList;
-		private IDictionary<String, IList<String>> knownTypesAdjacencyList;
+		private readonly IDictionary<String, IList<StringPair>> adjacencyList;
+
+		private readonly IDictionary<String, IList<String>> knownTypesAdjacencyList;
+
 		internal ICollection<IList<StringPair>> Links => this.adjacencyList.Values;
+
 		internal ICollection<String> Types => this.adjacencyList.Keys;
 
 		public TypeGraph(IDictionary<String, IList<StringPair>> adjacencyList, IDictionary<String, IList<String>> knownTypesAdjacencyList)

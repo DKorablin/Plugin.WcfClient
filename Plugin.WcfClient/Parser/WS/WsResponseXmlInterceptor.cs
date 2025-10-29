@@ -9,8 +9,8 @@ namespace Plugin.WcfClient.Parser.Ws
 	internal class WsResponseXmlInterceptor : SoapExtension
 	{
 		private WsTraceStream _traceStream;
-		
-		/// <summary>Надо только вытащить GET XML из потока. Затем вылететь.</summary>
+
+		/// <summary>You just need to extract the GET XML from the stream. Then exit.</summary>
 		public static Boolean IsExtractingXml { get; set; }
 
 		public static String XmlRequest { get; private set; }
@@ -20,8 +20,6 @@ namespace Plugin.WcfClient.Parser.Ws
 		{
 			this._traceStream = new WsTraceStream(stream);
 			return this._traceStream;
-
-			//return base.ChainStream(stream);
 		}
 
 		public override Object GetInitializer(Type serviceType)

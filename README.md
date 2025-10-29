@@ -1,4 +1,6 @@
 # Windows Communication Foundation (WCF) and Web Service (WS) test client application
+[![Auto build](https://github.com/DKorablin/Plugin.WcfClient/actions/workflows/release.yml/badge.svg)](https://github.com/DKorablin/Plugin.WcfClient/releases/latest)
+
 This application is a versatile test client for both WCF (Windows Communication Foundation) and classic ASMX Web Services. It allows you to add services via URL or local WSDL files, create test data for methods, and save/load entire test projects for later use.
 
 Inspired by the original Microsoft WCF Test Client, this tool expands on its capabilities by adding full support for legacy Web Services (ASMX), making it a single solution for testing various service-oriented architectures.

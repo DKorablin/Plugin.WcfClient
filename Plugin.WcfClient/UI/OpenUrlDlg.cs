@@ -7,14 +7,14 @@ namespace Plugin.WcfClient.UI
 {
 	public partial class OpenUrlDlg : Form
 	{
-		/// <summary>Uri адрес сервиса</summary>
+		/// <summary>Uri address of the service</summary>
 		internal String Address
 		{
 			get => txtAddress.Text;
 			set => txtAddress.Text = value;
 		}
 
-		/// <summary>Тип сервиса</summary>
+		/// <summary>The service type</summary>
 		internal ServiceType Type
 		{
 			get => (ServiceType)ddlType.SelectedItem;
@@ -23,7 +23,7 @@ namespace Plugin.WcfClient.UI
 
 		public OpenUrlDlg()
 		{
-			InitializeComponent();
+			this.InitializeComponent();
 			ddlType.DataSource = Enum.GetValues(typeof(ServiceType));
 			ddlType.SelectedItem = ServiceType.WCF;
 		}

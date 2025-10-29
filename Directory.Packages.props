@@ -1,0 +1,17 @@
+<Project>
+	<PropertyGroup>
+		<ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageVersion Include="SAL.Windows" Version="1.2.11">
+			<ExcludeAssets>runtime</ExcludeAssets>
+		</PackageVersion>
+		<PackageVersion Include="Microsoft.VisualStudio.VirtualTreeGrid" Version="9.0.0" />
+		<PackageVersion Include="System.ServiceModel.Primitives" Version="8.1.2" />
+		<!--Analyzers-->
+		<GlobalPackageReference Include="SonarAnalyzer.CSharp" Version="10.8.0.113526">
+			<PrivateAssets>All</PrivateAssets>
+			<IncludeAssets>Runtime; Build; Native; contentfiles; Analyzers; buildtransitive</IncludeAssets>
+		</GlobalPackageReference>
+	</ItemGroup>
+</Project>

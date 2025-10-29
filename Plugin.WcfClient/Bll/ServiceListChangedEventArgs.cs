@@ -3,33 +3,33 @@ using Plugin.WcfClient.Parser;
 
 namespace Plugin.WcfClient.Bll
 {
-	/// <summary>Аргументы изменения состояния сервиса</summary>
+	/// <summary>Service state change arguments</summary>
 	internal class ServiceListChangedEventArgs : EventArgs
 	{
-		/// <summary>Статус изменения статуса</summary>
+		/// <summary>Status change status</summary>
 		public enum ChangeStatus
 		{
-			/// <summary>Добавлен</summary>
+			/// <summary>Added</summary>
 			Added,
-			/// <summary>Удалён</summary>
+			/// <summary>Removed</summary>
 			Removed,
-			/// <summary>Загружен</summary>
+			/// <summary>Loaded</summary>
 			Loaded,
-			/// <summary>Выгружен</summary>
+			/// <summary>Unloaded</summary>
 			Unloaded,
-			/// <summary>Перезагружается</summary>
+			/// <summary>Reloading</summary>
 			Reloading,
-			/// <summary>Изменён</summary>
+			/// <summary>Changed</summary>
 			Changed,
 		}
 
-		/// <summary>Ряд таблицы из настроек</summary>
+		/// <summary>Table row from settings</summary>
 		public SettingsDataSet.TreeRow TreeRow { get; }
 
-		/// <summary>Проект. Используется при загрузке</summary>
+		/// <summary>Project. Used during loading</summary>
 		public ServiceProject Project { get; }
 
-		/// <summary>Статус изменения в настройках</summary>
+		/// <summary>Settings change status</summary>
 		public ChangeStatus Status { get; }
 
 		public ServiceListChangedEventArgs(ServiceProject project)

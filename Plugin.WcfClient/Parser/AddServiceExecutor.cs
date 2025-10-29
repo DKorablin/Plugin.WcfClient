@@ -70,7 +70,7 @@ namespace Plugin.WcfClient.Parser
 				project.Remove();
 				project = null;
 			}
-			//this.serviceProjects.Add(serviceProject);
+
 			return project;
 		}
 	}

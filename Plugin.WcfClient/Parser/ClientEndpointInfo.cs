@@ -7,7 +7,6 @@ namespace Plugin.WcfClient.Parser
 	[Serializable]
 	internal class ClientEndpointInfo
 	{
-		#region Fields
 		[NonSerialized]
 		private String _invalidReason;
 
@@ -15,7 +14,6 @@ namespace Plugin.WcfClient.Parser
 
 		[NonSerialized]
 		private ServiceProject _project;
-		#endregion Fields
 
 		internal String InvalidReason
 		{
@@ -34,7 +32,7 @@ namespace Plugin.WcfClient.Parser
 		public String EndpointName
 			=> this.EndpointConfigurationName == null
 				? this.OperationContractTypeName
-				: String.Format(CultureInfo.CurrentCulture, "{0} ({1})", this.OperationContractTypeName, this.EndpointConfigurationName);
+				: $"{this.OperationContractTypeName} ({this.EndpointConfigurationName})";
 
 		public String ProxyIdentifier { get; internal set; }
 

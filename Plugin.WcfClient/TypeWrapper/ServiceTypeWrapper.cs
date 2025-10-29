@@ -13,9 +13,7 @@ namespace Plugin.WcfClient.Parser
 		public EditorType EditorType => this.typeStrategy.EditorType;
 
 		public String FriendlyName
-			=> this._friendlyName == null
-				? this._friendlyName = this.ComposeFriendlyName()
-				: this._friendlyName;
+			=> this._friendlyName ?? (this._friendlyName = this.ComposeFriendlyName());
 
 		public Boolean IsValid => this.typeStrategy.IsValid;
 
@@ -28,12 +26,12 @@ namespace Plugin.WcfClient.Parser
 		public ServiceTypeWrapper(String typeName, List<ServiceMemberWrapper> members, TypeProperty typeProperty, String[] enumChoices)
 		{
 			this.typeStrategy = new TypeStrategy(typeName, typeProperty, enumChoices);
-			members.Sort();//TODO: Сортировка тут лишняя
+			members.Sort();//TODO: Sorting is unnecessary here
 			this.Members = members.ToArray();
 			this.SubTypes = new ServiceTypeWrapper[] { };
 		}
 
-		public void AddToMemebers(ServiceMemberWrapper member)
+		public void AddToMembers(ServiceMemberWrapper member)
 			=> this.Members = AddItemToArray(this.Members, member);
 
 		public void AddToSubTypes(ServiceTypeWrapper subType)
@@ -60,16 +58,15 @@ namespace Plugin.WcfClient.Parser
 			String[] array = this.typeStrategy.GetSelectionList();
 			if(array != null && array.Length == 0)
 			{
-				List<String> list = new List<String>();
-				list.Add(TypeStrategy.NullRepresentation);
-				list.Add(this.typeStrategy.TypeName);
+				List<String> list = new List<String>() {
+					TypeStrategy.NullRepresentation,
+					this.typeStrategy.TypeName,
+				};
+
 				foreach(ServiceTypeWrapper current in this.SubTypes)
-				{
 					if(current.IsValid)
-					{
 						list.Add(current.TypeName);
-					}
-				}
+
 				array = new String[list.Count];
 				list.CopyTo(array);
 			}

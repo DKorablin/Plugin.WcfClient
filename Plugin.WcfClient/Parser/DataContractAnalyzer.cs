@@ -164,7 +164,7 @@ namespace Plugin.WcfClient.Parser
 					{
 						ServiceTypeWrapper serviceTypeInfo2 = dictionary2[graphType];
 						foreach(StringPair linkByType in typeGraph.GetLinksByType(graphType))
-							serviceTypeInfo2.AddToMemebers(dictionary[linkByType]);
+							serviceTypeInfo2.AddToMembers(dictionary[linkByType]);
 					}
 
 				MethodInfo[] methods = type.GetMethods();
@@ -274,7 +274,7 @@ namespace Plugin.WcfClient.Parser
 				{
 					ServiceTypeWrapper serviceTypeInfo2 = dictionary2[graphType];
 					foreach(StringPair current5 in typeGraph.GetLinksByType(graphType))
-						serviceTypeInfo2.AddToMemebers(dictionary[current5]);
+						serviceTypeInfo2.AddToMembers(dictionary[current5]);
 				}
 
 			MethodInfo[] methods = type.GetMethods();
@@ -339,8 +339,8 @@ namespace Plugin.WcfClient.Parser
 				IList<StringObjectPair> list = new List<StringObjectPair>();
 				result.Add(obj, list);
 				Type type = obj.GetType();
-				if(type.IsBclType())//HACK: Исправление для параметров WebService'ов
-					continue;//Если дошли до базового типа, то продолжать разбирать бесполезно
+				if(type.IsBclType())//HACK: Fix for WebService parameters
+					continue;//If you've reached the basic type, then there's no point in continuing to analyze it.
 				if(type.IsArray)
 				{
 					Array array = (Array)obj;
@@ -354,13 +354,13 @@ namespace Plugin.WcfClient.Parser
 					foreach(Object value in collection)
 						DataContractAnalyzer.AddMemberValueToList(objects, result, list, value, "[" + index++ + "]");
 				} else if(type.IsDictionaryType())
-				{//Разбор словаря
+				{//Dictionary analysis
 					IDictionary dictionary2 = (IDictionary)obj;
 					Int32 index = 0;
 					foreach(Object value in dictionary2)
 						DataContractAnalyzer.AddMemberValueToList(objects, result, list, value, "[" + index++ + "]");
 				} else
-				{//Разбор свойств и пропертей объекта
+				{//Parsing the properties of an object
 					foreach(PropertyInfo property in type.GetProperties())
 						if(property.CanRead && property.GetIndexParameters().Length == 0)
 						{
@@ -385,7 +385,7 @@ namespace Plugin.WcfClient.Parser
 		}
 
 		private static TypeGraph BuildTypeGraph(ServiceType serviceType, Queue<Type> rootTypes, IDictionary<String, String[]> enumChoices, IDictionary<String, TypeProperty> typeProperties)
-		{//serviceType необходим для WebService, где дочерние элементы входящих объектов не имеют атрибутов: Method(Element { Property get { Value { get {0} } })
+		{//serviceType is required for WebServices where children of incoming objects have no attributes: Method(Element { Property get { Value { get {0} } })
 			IDictionary<String, IList<StringPair>> dictionary = new Dictionary<String, IList<StringPair>>();
 			IDictionary<String, IList<String>> dictionary2 = new Dictionary<String, IList<String>>();
 			while(rootTypes.Count > 0)
@@ -453,7 +453,7 @@ namespace Plugin.WcfClient.Parser
 						rootTypes.Enqueue(genericArguments4[0]);
 						rootTypes.Enqueue(genericArguments4[1]);
 					} else if(type.IsBclType())
-					{//TODO: Хак для WS сервисов. Чтобы не разбирать базовые типы
+					{//TODO: A hack for WS services. To avoid parsing base types.
 						continue;
 					} else if(serviceType == ServiceType.WS || DataContractAnalyzer.IsSupportedType(type))
 					{
@@ -545,17 +545,17 @@ namespace Plugin.WcfClient.Parser
 			clientTypeName = null;
 			foreach(Type type in ClientSettings.ClientAssembly.GetTypes())
 				if(contractType.IsAssignableFrom(type) && !type.IsInterface)
-					clientTypeName = type.FullName;//TODO: Возможно, тут не хватает break;
+					clientTypeName = type.FullName;//TODO: Perhaps there is a break missing here;
 			return queue;
 		}
 
 		private static Boolean HasAttribute(MemberInfo member, Type type)
 			=> member.ContainsCustomAttribute(type, true);
 
-		/// <summary>Проверка на подходящий тип данных для WCF сервиса</summary>
-		/// <remarks>Проверка необходима только для WCF сервисов. К примеру для ExtensionDataObject</remarks>
-		/// <param name="member">Тип для проверки на поддерживаемость</param>
-		/// <returns>Тип поддерживается WCF сервисом</returns>
+		/// <summary>Checking for a suitable data type for a WCF service</summary>
+		/// <remarks>Checking is only necessary for WCF services. For example, for ExtensionDataObject</remarks>
+		/// <param name="member">Type to check for support</param>
+		/// <returns>Type supported by the WCF service</returns>
 		private static Boolean IsSupportedMember(MemberInfo member)
 		{
 			foreach(Type attribute in DataContractAnalyzer.memberAttributes)

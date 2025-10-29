@@ -7,19 +7,19 @@ namespace Plugin.WcfClient
 		public static class Settings
 		{
 			public const String TestAssembliesFolderName = "Test Client Projects";
-			/// <summary>Наименование файла, в котором сохраняются все настройки по проекту</summary>
+			/// <summary>Name of the file where all project settings are saved</summary>
 			public const String ServiceFileName = "WcfSettings.xml";
 		}
 
 		internal static class Plugin
 		{
-			/// <summary>Плагин браузера</summary>
+			/// <summary>Browser plugin</summary>
 			public const String Browser = "7476853a-3a40-4d5f-a5b5-a00f1dc4d24c";
 		}
 
 		public static class PluginType
 		{
-			/// <summary>Документ браузера</summary>
+			/// <summary>Browser document</summary>
 			public const String BrowserDocument = "Plugin.Browser.DocumentBrowser";
 		}
 

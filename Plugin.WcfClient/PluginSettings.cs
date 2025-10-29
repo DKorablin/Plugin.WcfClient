@@ -10,12 +10,12 @@ namespace Plugin.WcfClient
 		private SettingsBll _serviceSettings;
 
 		[Category("Proxy")]
-		[Description("Логин для доступа к прокси (если есть)")]
+		[Description("Login for proxy access (if any)")]
 		[DisplayName("User Name")]
 		public String ProxyUserName { get; set; }
 
 		[Category("Proxy")]
-		[Description("Пароль для доступа к прокси (если есть)")]
+		[Description("Password for proxy access (if any)")]
 		[DisplayName("Password")]
 		[PasswordPropertyText(true)]
 		public String ProxyPassword { get; set; }
@@ -38,16 +38,14 @@ namespace Plugin.WcfClient
 		[DefaultValue(false)]
 		public Boolean SaveInputValues { get; set; }
 
-		/// <summary>Использовать прокси для доступа к интернетам</summary>
+		/// <summary>Use a proxy to access the internet</summary>
 		internal Boolean UseProxy
-			=> !String.IsNullOrEmpty(this.ProxyUserName)
-					&& !String.IsNullOrEmpty(this.ProxyPassword);
+		=> !String.IsNullOrEmpty(this.ProxyUserName)
+		&& !String.IsNullOrEmpty(this.ProxyPassword);
 
-		/// <summary>Настройки WCF/WS сервисов</summary>
+		/// <summary>WCF/WS service settings</summary>
 		internal SettingsBll ServiceSettings
-			=> this._serviceSettings == null
-				? this._serviceSettings = new SettingsBll(this._plugin)
-				: this._serviceSettings;
+			=> this._serviceSettings ?? (this._serviceSettings = new SettingsBll(this._plugin));
 
 		public PluginSettings(PluginWindows plugin)
 			=> this._plugin = plugin;

@@ -27,9 +27,13 @@ namespace Plugin.WcfClient.Parser
 		public ServiceType Type { get; private set; }
 
 		public String UserName { get; private set; }
+
 		public String Password { get; private set; }
+
 		public String ProxyUserName { get; private set; }
+
 		public String ProxyPassword { get; private set; }
+
 
 		public Boolean UseProxy => !String.IsNullOrEmpty(this.ProxyUserName) && !String.IsNullOrEmpty(this.ProxyPassword);
 

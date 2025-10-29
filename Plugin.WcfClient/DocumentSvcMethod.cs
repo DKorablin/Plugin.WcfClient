@@ -72,7 +72,7 @@ namespace Plugin.WcfClient
 					bwLoadService.RunWorkerAsync(inputs);
 					this.ToggleForm(true);
 				}
-				return null;//Проект самостоятельно загрузит SetProject (Не сработает, если его вызвал InvokeTest)
+				return null;//The project will load itself using SetProject (Will not work if called by InvokeTest)
 			} else
 				return project;
 		}
@@ -114,7 +114,7 @@ namespace Plugin.WcfClient
 
 			this.ResetInputTree();
 			if(method.Endpoint.ServiceProject.Info.Row.ServiceRow.ServiceType == ServiceType.WS && !this.Plugin.Settings.ShowWsPayload)
-			{//TODO: После 2х запросов XML GET параметров, WS сервис повисает. (См. ServiceExecutor Ln.264)
+			{//TODO: After two XML GET parameter requests, the WS service hangs. (See ServiceExecutor Ln.264)
 				tabMain.TabPages.Remove(tabXml);
 				tabXml.Dispose();
 				tabXml = null;
@@ -170,7 +170,7 @@ namespace Plugin.WcfClient
 				if(this.Plugin.Settings.SaveInputValues)
 					method.LoadData(variables);
 			} else
-			{//TODO: Тут может быть ошибка, если массив переменных изменился в сервисе, если в будущем внедрить обновление параметров
+			{//TODO: There may be an error here if the variable array has changed in the service if a parameter update is implemented in the future.
 				variables = this.Settings.Variables;
 			}
 
@@ -212,7 +212,7 @@ namespace Plugin.WcfClient
 					Int32 row = variables.Length - i - 1;
 					if(gridOutput.Tree.IsExpandable(row, 0))
 					{
-						//FIX: Код разворачивания дерева может уйти в рекурсию, если объекты ссылаются на родителя. Example: Node->Node->ParentNode
+						//FIX: Tree expansion code can become recurse if objects reference a parent. Example: Node->Node->ParentNode
 						gridOutput.Tree.ToggleExpansion(row, 0);
 						//gridOutput.ExpandRecurse(row, 0);
 					}
@@ -397,7 +397,7 @@ namespace Plugin.WcfClient
 					if(dlg.ShowDialog() == DialogResult.OK)
 						VariableWrapper.SaveData(dlg.FileName, this.GetVariables());
 			} else
-				throw new NotImplementedException(String.Format("Item {0} not implemented", e.ClickedItem));
+				throw new NotImplementedException($"Item '{e.ClickedItem}' not implemented");
 		}
 
 		private void tabMain_SelectedIndexChanged(Object sender, EventArgs e)

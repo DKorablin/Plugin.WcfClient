@@ -16,7 +16,7 @@ namespace Plugin.WcfClient.Parser
 
 		public const String NullRepresentation = "(null)";
 
-		internal static IDictionary<String, Type> typesCache = new Dictionary<String, Type>();
+		internal static readonly IDictionary<String, Type> typesCache = new Dictionary<String, Type>();
 
 		private static readonly List<String> numericTypes = new List<String>(new String[]
 		{
@@ -228,8 +228,7 @@ namespace Plugin.WcfClient.Parser
 						return null;
 					}
 				case "System.DateTimeOffset":
-					DateTimeOffset offset;
-					return DateTimeOffset.TryParse(input, out offset) ? offset.ToString() : null;
+					return DateTimeOffset.TryParse(input, out DateTimeOffset offset) ? offset.ToString() : null;
 				case "System.TimeSpan":
 					try
 					{
@@ -261,15 +260,15 @@ namespace Plugin.WcfClient.Parser
 		}
 
 		public Object GetObject(String value, VariableWrapper[] variables)
-		{//TODO: Метод валидации: ServiceMemberInfo.ValidateAndCanonicalize(String, out String) метод парсинга: TypeStrategy.GetObject(String, VariableInfo[])
+		{//TODO: Validation method: ServiceMemberInfo.ValidateAndCanonicalize(String, out String) Parsing method: TypeStrategy.GetObject(String, VariableInfo[])
 			if(this.enumChoices != null)
 				return Enum.Parse(this.ClientType, value);
 			else if(TypeStrategy.numericTypes.Contains(this.TypeName))
 			{
 				MethodInfo parse = Type.GetType(this.TypeName).GetMethod("Parse", new Type[] { typeof(String), });
 				return parse.Invoke(null, new Object[] { value, });
-				//TODO: Вызов Parse(value,CultureInfo.CurrentUICulture) был заменён, т.к. Decimal (100,21 не воспринимает парсер, а 100.21 не воспринимает VirtualTreeGrid)
-				// Валидация происходит в методе: ValidateAndCanonicalize
+				//TODO: The call to Parse(value,CultureInfo.CurrentUICulture) was replaced because Decimal (100.21) is not accepted by the parser, and 100.21 is not accepted by VirtualTreeGrid.
+				// Validation occurs in the method: ValidateAndCanonicalize
 				//return Type.GetType(this.TypeName).GetMethod("Parse", new Type[] { typeof(String), typeof(IFormatProvider) }).Invoke(null, new Object[] { value, CultureInfo.CurrentUICulture, });
 			} else
 			{
@@ -292,11 +291,10 @@ namespace Plugin.WcfClient.Parser
 				case "System.Uri":
 					return value.Equals(TypeStrategy.NullRepresentation, StringComparison.Ordinal) ? null : new Uri(value);
 				case "System.Xml.XmlQualifiedName":
-					if(value.Equals(TypeStrategy.NullRepresentation,StringComparison.Ordinal))
+					if(value.Equals(TypeStrategy.NullRepresentation, StringComparison.Ordinal))
 						return null;
 
-					XmlQualifiedName result;
-					TypeStrategy.TryParseXmlQualifiedName(value, out result);
+					TypeStrategy.TryParseXmlQualifiedName(value, out XmlQualifiedName result);
 					return result;
 				default:
 					if(value.Equals(TypeStrategy.NullRepresentation))
@@ -307,7 +305,7 @@ namespace Plugin.WcfClient.Parser
 						Array array = Array.CreateInstance(type, Int32.Parse(value.Substring(TypeStrategy.LengthRepresentation.Length), CultureInfo.CurrentUICulture));
 						Int32 num = 0;
 						if(variables != null)
-							for(Int32 i = 0;i < variables.Length;i++)
+							for(Int32 i = 0; i < variables.Length; i++)
 							{
 								VariableWrapper info = variables[i];
 								array.SetValue(info.GetObject(), num++);
@@ -320,7 +318,7 @@ namespace Plugin.WcfClient.Parser
 						if(variables != null)
 						{
 							MethodInfo method = type.GetMethod("Add");
-							for(Int32 j = 0;j < variables.Length;j++)
+							for(Int32 j = 0; j < variables.Length; j++)
 							{
 								VariableWrapper info = variables[j];
 								method.Invoke(obj, new Object[] { info.GetObject(), });
@@ -328,10 +326,8 @@ namespace Plugin.WcfClient.Parser
 						}
 						return obj;
 					} else if(this.typeProperty.IsDictionary)
-					{
-						List<Int32> list = null;
-						return TypeStrategy.CreateAndValidateDictionary(this.TypeName, variables, out list);
-					} else if(this.typeProperty.IsNullable)
+						return TypeStrategy.CreateAndValidateDictionary(this.TypeName, variables, out List<Int32> list);
+					else if(this.typeProperty.IsNullable)
 						return variables[0].GetObject();
 					else if(this.typeProperty.IsKeyValuePair)
 					{
@@ -345,7 +341,7 @@ namespace Plugin.WcfClient.Parser
 					{
 						Type type = this.ClientType;
 						Object obj2 = Activator.CreateInstance(type);
-						for(Int32 k = 0;k < variables.Length;k++)
+						for(Int32 k = 0; k < variables.Length; k++)
 						{
 							VariableWrapper info = variables[k];
 							PropertyInfo property = type.GetProperty(info.Name);

@@ -7,15 +7,14 @@ namespace Plugin.WcfClient.Extensions
 	{
 		public static T Find<T>(this IList<T> list, Predicate<T> match)
 		{
-			if(match == null)
-				throw new ArgumentNullException("match");
+			_ = match ?? throw new ArgumentNullException(nameof(match));
 
-			for(int i = 0; i < list.Count; i++)
+			for(Int32 i = 0; i < list.Count; i++)
 			{
 				if(match(list[i]))
 					return list[i];
 			}
-			return default(T);
+			return default;
 		}
 	}
 }

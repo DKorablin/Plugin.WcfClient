@@ -9,7 +9,7 @@ namespace Plugin.WcfClient.Bll
 		private readonly SettingsDataSet.TreeRow _row;
 
 		[Category("General")]
-		[Description("Тип сервиса WCF/WebService")]
+		[Description("The type of service WCF or WebService")]
 		public ServiceType Type
 		{
 			get => this._row.ServiceRow.ServiceType;
@@ -41,7 +41,7 @@ namespace Plugin.WcfClient.Bll
 		}
 
 		[Category("Network")]
-		[Description("Путь к сервису на удалённой машине")]
+		[Description("Path to the service on the remote machine")]
 		public String Address
 		{
 			get => this._row.Name;
@@ -57,7 +57,7 @@ namespace Plugin.WcfClient.Bll
 
 		[Category("Network")]
 		[DisplayName("Login")]
-		[Description("Логин для авторизации")]
+		[Description("Login for authorization")]
 		public String Login
 		{
 			get => this._row.ServiceRow.Login;
@@ -73,7 +73,7 @@ namespace Plugin.WcfClient.Bll
 
 		[Category("Network")]
 		[DisplayName("Password")]
-		[Description("Пароль для авторизации")]
+		[Description("Password for authorization")]
 		[PasswordPropertyText(true)]
 		public String Password
 		{
@@ -90,7 +90,7 @@ namespace Plugin.WcfClient.Bll
 
 		[Category("Proxy")]
 		[DisplayName("Login")]
-		[Description("Логин для авторизации на прокси сервере")]
+		[Description("Login for authorization on the proxy server")]
 		public String ProxyLogin
 		{
 			get => this._row.ServiceRow.ProxyLogin;
@@ -106,7 +106,7 @@ namespace Plugin.WcfClient.Bll
 
 		[Category("Proxy")]
 		[DisplayName("Password")]
-		[Description("Пароль для авторизации на прокси сервере")]
+		[Description("Password for authorization on the proxy server")]
 		[PasswordPropertyText(true)]
 		public String ProxyPassword
 		{

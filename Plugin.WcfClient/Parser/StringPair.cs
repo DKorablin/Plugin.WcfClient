@@ -14,9 +14,9 @@ namespace Plugin.WcfClient.Parser
 			this.String2 = string2;
 		}
 
-		public override Boolean Equals(Object o)
+		public override Boolean Equals(Object obj)
 		{
-			StringPair stringPair = o as StringPair;
+			StringPair stringPair = obj as StringPair;
 			return stringPair != null && stringPair.String1.Equals(this.String1) && stringPair.String2.Equals(this.String2);
 		}
 

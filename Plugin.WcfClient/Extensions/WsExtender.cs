@@ -47,7 +47,7 @@ namespace Plugin.WcfClient.Extensions
 		public void InjectExtension()
 		{
 			if(this.HighPriExtensionInitializers.Length > 0)
-				return;//Код уже внедрён
+				return;//The code has already been implemented
 
 			Type extensionType = WsExtender.SoapReflectedExtensionType;
 
@@ -60,7 +60,7 @@ namespace Plugin.WcfClient.Extensions
 			Array extensionArr = Array.CreateInstance(extensionType, 1);
 			extensionArr.SetValue(extensionObj, 0);
 
-			//Присвоение расширения
+			//Assigning an extension
 			this.HighPriExtensions = extensionArr;
 			//this._client.GetType().InvokeMember("HighPriExtensions", BindingFlags.SetField | BindingFlags.DeclaredOnly | BindingFlags.NonPublic | BindingFlags.Instance, null, this._client, new Object[] { extensionArr, });
 

@@ -70,9 +70,9 @@ namespace Plugin.WcfClient.Parser
 		}
 
 		private static IDictionary<String, Object> CachedProxies = new Dictionary<String, Object>();
-		private static Object _lockObject = new Object();
+		private static readonly Object _lockObject = new Object();
 		private Boolean _isExtractingXml;
-		/// <summary>Используется при вытаскивании только GET запроса от WebService'а</summary>
+		/// <summary>Used when retrieving only a GET request from a WebService</summary>
 		private Boolean IsExtractingXml
 		{
 			get => this._isExtractingXml;
@@ -107,7 +107,7 @@ namespace Plugin.WcfClient.Parser
 
 			switch(type)
 			{//Pre intit work
-			case ServiceType.WS://TODO: Сюда необходимо пронести ProxyUserName и ProxyPassword из настроек
+			case ServiceType.WS://TODO: Here you need to enter ProxyUserName and ProxyPassword from the settings
 				value.GetType().InvokeMember("Proxy", BindingFlags.SetProperty, null, value, new Object[] { new System.Net.WebProxy() { UseDefaultCredentials = true, }, });
 				break;
 			}
@@ -118,14 +118,12 @@ namespace Plugin.WcfClient.Parser
 			if(ServiceExecutor.CachedProxies.ContainsKey(proxyIdentifier))
 			{
 				Object client = ServiceExecutor.CachedProxies[proxyIdentifier];
-				ICommunicationObject wcfClient = client as ICommunicationObject;
-				SoapHttpClientProtocol wsClient = client as SoapHttpClientProtocol;
-				if(wcfClient != null)
+				if(client is ICommunicationObject wcfClient)
 					ServiceExecutor.CloseClient(wcfClient);
-				else if(wsClient != null)
+				else if(client is SoapHttpClientProtocol wsClient)
 					ServiceExecutor.CloseClient(wsClient);
 				else if(client == null)
-					throw new ArgumentNullException("client");
+					throw new NotSupportedException("Unknown client type specified");
 				else
 					throw new NotImplementedException(client.ToString());
 
@@ -174,6 +172,7 @@ namespace Plugin.WcfClient.Parser
 			parameterArray = new Object[parameters.Length];
 			IDictionary<String, Object> dictionary = DataContractAnalyzer.BuildParameters(inputs);
 			Int32 count = 0;
+
 			foreach(ParameterInfo parameter in parameters)
 			{
 				if(parameter.IsIn || !parameter.IsOut)
@@ -239,7 +238,7 @@ namespace Plugin.WcfClient.Parser
 					{
 						WsExtender extender = new WsExtender(serviceObj);
 						extender.InjectExtension();
-						if(inputValues.UseAuthentication)//TODO: Если объект уже закеширован, то Credentials выставлять не надо
+						if(inputValues.UseAuthentication)//TODO: If the object is already cached, then Credentials do not need to be set.
 							extender.Credentials = new NetworkCredential(inputValues.UserName, inputValues.Password);
 						//type.InvokeMember("Credentials", BindingFlags.Instance | BindingFlags.Public | BindingFlags.SetProperty, null, serviceObj, new Object[] { credentials, });
 
@@ -260,7 +259,7 @@ namespace Plugin.WcfClient.Parser
 						throw;
 
 					/*if(inputValues.Type == ServiceAnalyzer.ServiceType.WS)
-					{//TODO: После 2х запросов XML GET параметров, WS сервис повисает.
+					{//TODO: After 2 requests for XML GET parameters, the WS service hangs.
 						//((SoapHttpClientProtocol)serviceObj).Abort();
 						this.DeleteClient(inputValues.ProxyIdentifier);
 					}*/
@@ -270,6 +269,7 @@ namespace Plugin.WcfClient.Parser
 						ex2.InnerException.StackTrace,
 						inputValues.Type == ServiceType.WCF ? responseWcfXml.InterceptedXml : WsResponseXmlInterceptor.XmlRequest);
 				}
+
 				IDictionary<String, Object> dictionary = new Dictionary<String, Object>();
 				Int32 num = 0;
 				ParameterInfo[] array3 = prmsType;

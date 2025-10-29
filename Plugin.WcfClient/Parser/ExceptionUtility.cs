@@ -7,12 +7,12 @@ using System.Windows.Forms;
 
 namespace Plugin.WcfClient.Parser
 {
-	/// <summary>Утилиты работы с исключительными ситуациями</summary>
+	/// <summary>Exception handling utilities</summary>
 	internal class ExceptionUtility
 	{
-		/// <summary>Выполнить действие с файловой системой и обработать исключительные ситуации</summary>
-		/// <remarks>Обрабатываются исключения: IOException, UnauthorizedAccessException</remarks>
-		/// <param name="func">Делегат на действие с файловой системой</param>
+		/// <summary>Perform a file system action and handle exceptions</summary>
+		/// <remarks>Handled exceptions: IOException, UnauthorizedAccessException</remarks>
+		/// <param name="func">Delegate for file system action</param>
 		public static Boolean InvokeFSAction(Action func)
 		{
 			DialogResult result;
@@ -33,9 +33,9 @@ namespace Plugin.WcfClient.Parser
 			return false;
 		}
 
-		/// <summary>Проверка исключения на фатальное, после которого дальнейшее выполнение кода невозможно</summary>
-		/// <param name="exception">Исключение для проверки</param>
-		/// <returns>Исключение фатальное</returns>
+		/// <summary>Checking for a fatal exception, after which further code execution is impossible</summary>
+		/// <param name="exception">Exception to check</param>
+		/// <returns>Fatal exception</returns>
 		public static Boolean IsFatal(Exception exception)
 		{
 			while(exception != null)

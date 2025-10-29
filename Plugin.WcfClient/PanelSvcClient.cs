@@ -19,7 +19,7 @@ namespace Plugin.WcfClient
 
 		public PanelSvcTestClient()
 		{
-			InitializeComponent();
+			this.InitializeComponent();
 			gridSearch.TreeView = tvService;
 		}
 
@@ -28,15 +28,15 @@ namespace Plugin.WcfClient
 			this.Window.Caption = "Service Test Client";
 			this.Window.SetTabPicture(Resources.iconWs);
 			this.Window.SetDockAreas(DockAreas.DockBottom | DockAreas.DockLeft | DockAreas.DockRight | DockAreas.DockTop | DockAreas.Float);
-			this.Window.Closing += Window_Closing;
-			this.Plugin.ServiceListChanged += Plugin_ServiceListChanged;
+			this.Window.Closing += this.Window_Closing;
+			this.Plugin.ServiceListChanged += this.Plugin_ServiceListChanged;
 			base.OnCreateControl();
 
 			tvService.Attach(this.Plugin.Settings.ServiceSettings);
 		}
 
 		private void Window_Closing(Object sender, CancelEventArgs e)
-			=> this.Plugin.ServiceListChanged -= Plugin_ServiceListChanged;
+			=> this.Plugin.ServiceListChanged -= this.Plugin_ServiceListChanged;
 
 		private void AddService(SettingsDataSet.TreeRow row)
 		{
@@ -76,11 +76,11 @@ namespace Plugin.WcfClient
 				this.Plugin_ServiceListChanged(null, new ServiceListChangedEventArgs(project));
 		}
 
-		/// <summary>Выполнить базовое действие по умолчанию на выбранном узле</summary>
-		/// <param name="node">Узел дерева</param>
+		/// <summary>Perform the default basic action on the selected node</summary>
+		/// <param name="node">Tree node</param>
 		private void InvokeNodeDefaultAction(ServiceTreeNode node)
 		{
-			_ = node ?? throw new ArgumentNullException(nameof(node), "Не указан узел дерева для действия по умолчанию.");
+			_ = node ?? throw new ArgumentNullException(nameof(node), "No tree node specified for default action.");
 
 			switch(node.NodeType)
 			{
@@ -224,7 +224,7 @@ namespace Plugin.WcfClient
 			switch(row.ElementType)
 			{
 			case ElementType.Client:
-				message = "Are you shure you want to remove selected project?";
+				message = "Are you sure you want to remove selected project?";
 				break;
 			case ElementType.Tree:
 				message = String.Format("Are you sure you want to remove node {0} and all children{1}?", row.Name, node.Nodes.Count == 0 ? String.Empty : "s");
@@ -343,10 +343,10 @@ namespace Plugin.WcfClient
 		private void cmsService_ItemClicked(Object sender, ToolStripItemClickedEventArgs e)
 		{
 			if(e.ClickedItem == tsmiServiceCopy)
-				return;//Игнор
+				return;//Ignore
 
 			ServiceTreeNode node = tvService.SelectedNode;
-			if(node != null)//Для шорткатов
+			if(node != null)//For the shortcuts
 			{
 				cmsService.Close();
 				if(e.ClickedItem == tsmiServiceOpen)
@@ -420,25 +420,24 @@ namespace Plugin.WcfClient
 		private void tvService_AfterLabelEdit(Object sender, NodeLabelEditEventArgs e)
 		{
 			ServiceTreeNode node = (ServiceTreeNode)e.Node;
-			if(e.Label == null)//Отмена редактирования
+			if(e.Label == null)//Cancel editing
 			{
-				if(node.Settings==null)//Удаление узла, если пользователь отменил создание
+				if(node.Settings == null)//Delete the node if the user canceled creation
 					node.Remove();
-				return;
 			} else if(e.Label.Trim().Length == 0)
 				e.CancelEdit = true;
 			else if(node.Text.Equals(e.Label.Trim()))
 				e.CancelEdit = true;
 			/*else if(!Uri.IsWellFormedUriString(e.Label, UriKind.RelativeOrAbsolute))
-				e.CancelEdit = true;*///Сервис может быть и на TCP
-			else if(node.Settings == null)//Добавление новой папки в дерево
+				e.CancelEdit = true;*///The service can also be on TCP
+			else if(node.Settings == null)//Adding a new folder to the tree
 			{
 				SettingsDataSet.TreeRow parentRow = node.Parent == null ? null : node.Parent.Settings;
 				switch(node.NodeType)
 				{
-				case ServiceTreeNode.TreeImageList.Endpoint://Добавление нового клиента
-					throw new NotImplementedException("Endpont cant be added through add folder dlg");
-				case ServiceTreeNode.TreeImageList.Folder://Добавление нового узла в дереве
+				case ServiceTreeNode.TreeImageList.Endpoint://Adding a new client
+					throw new NotImplementedException("Endpoint cant be added through add folder dlg");
+				case ServiceTreeNode.TreeImageList.Folder://Adding a new node to the tree
 					{
 						SettingsDataSet.TreeRow newRow = this.Plugin.Settings.ServiceSettings.ModifyTreeNode(null, parentRow == null ? (Int32?)null : parentRow.TreeId, ElementType.Tree, e.Label);
 						node.Settings = newRow;
@@ -447,7 +446,7 @@ namespace Plugin.WcfClient
 					}
 					break;
 				default:
-					throw new NotImplementedException(String.Format("Element with type {0} not implemented", node.NodeType));
+					throw new NotImplementedException($"Element with type {node.NodeType} not implemented");
 				}
 			} else
 			{
@@ -455,8 +454,8 @@ namespace Plugin.WcfClient
 				this.Plugin.Settings.ServiceSettings.ModifyTreeNodeAddress(row, e.Label.Trim());
 				if(node.Project != null && row.ElementType == ElementType.Client)
 				{
-					//this.SelectedProject.RefreshConfig();//Это работать будет, но узлы не обновятся.
-					this.Plugin.UnloadService(row);//Выгружаю старый проект, если он был уже загружен, чтобы сервис смог обновить
+					//this.SelectedProject.RefreshConfig();//This will work, but the nodes will not be updated.
+					this.Plugin.UnloadService(row);//I'm uploading the old project if it was already uploaded so that the service can update it.
 					this.StartAddServiceWorker(row, AddServiceInputs.ActionType.Download, "Downloading service...");
 				}
 			}

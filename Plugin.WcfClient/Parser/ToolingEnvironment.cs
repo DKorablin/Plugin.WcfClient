@@ -86,9 +86,9 @@ namespace Plugin.WcfClient.Parser
 			foreach(String sdkPath in ToolingEnvironment.GetSdkPath())
 			{
 				if(!Directory.Exists(sdkPath))
-					throw new DirectoryNotFoundException(String.Format("Microsoft SDKs directory {0} not found while searching forr metadata tool {1}", sdkPath, binaryName));
+					throw new DirectoryNotFoundException($"Microsoft SDKs directory {sdkPath} not found while searching for metadata tool {binaryName}");
 
-				//Файл может лежать как и папке %SdkPath%\bin\, так и в папке %SdkPath%\bin\NETFX 4.5.1 Tools
+				//The file can be located either in the %SdkPath%\bin\ folder or in the %SdkPath%\bin\NETFX 4.5.1 Tools folder.
 				String[] binFiles = Directory.GetFiles(sdkPath, binaryName, SearchOption.AllDirectories);
 				if(binFiles.Length != 0)
 					return binFiles[0];

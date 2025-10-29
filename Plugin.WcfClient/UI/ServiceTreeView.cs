@@ -7,7 +7,7 @@ using Plugin.WcfClient.Parser;
 
 namespace Plugin.WcfClient.UI
 {
-	internal class ServiceTreeView : DraggableTreeView<ServiceTreeNode,ServiceTreeNode.TagExtender>
+	internal class ServiceTreeView : DraggableTreeView<ServiceTreeNode, ServiceTreeNode.TagExtender>
 	{
 		private SettingsBll Settings { get; set; }
 
@@ -17,7 +17,7 @@ namespace Plugin.WcfClient.UI
 			set => base.SelectedNode = value;
 		}
 
-		/// <summary>Выбранный проект</summary>
+		/// <summary>Selected project node</summary>
 		public ServiceProject SelectedProject
 			=> this.SelectedNode?.FindProject();
 
@@ -30,7 +30,7 @@ namespace Plugin.WcfClient.UI
 			case ServiceTreeNode.TreeImageList.Endpoint:
 				return false;
 			default:
-				throw new NotImplementedException(String.Format("NodeType {0} not implemented", treeNode.NodeType));
+				throw new NotImplementedException($"NodeType '{treeNode.NodeType}' not implemented");
 			}
 		}
 
@@ -43,7 +43,7 @@ namespace Plugin.WcfClient.UI
 				ServiceTreeNode movingNode = base.GetDragDropNode(args);
 
 				SettingsDataSet.TreeRow movingRow = movingNode.Settings;
-				SettingsDataSet.TreeRow toRow = (SettingsDataSet.TreeRow)(movingNode.Parent == null ? null : movingNode.Parent.Settings);
+				SettingsDataSet.TreeRow toRow = movingNode.Parent?.Settings;
 
 				Int32? parentTreeId = toRow == null ? (Int32?)null : toRow.TreeId;
 				this.Settings.MoveNode(movingRow.TreeId, parentTreeId);
@@ -83,7 +83,7 @@ namespace Plugin.WcfClient.UI
 			{
 				SettingsDataSet.TreeRow row = node.Settings;
 				if(row == null)
-					break;//Ушли глубоко в сервис
+					break;//We went deep into service
 				else if(row.TreeId == treeId)
 					return node;
 				else
@@ -100,8 +100,7 @@ namespace Plugin.WcfClient.UI
 		{
 			this.Settings = settings ?? throw new ArgumentNullException(nameof(settings));
 
-			List<ServiceTreeNode> nodes = new List<ServiceTreeNode>();
-			nodes.AddRange(this.Fill(settings, null));
+			List<ServiceTreeNode> nodes = new List<ServiceTreeNode>(this.Fill(settings, null));
 
 			base.BeginUpdate();
 			base.Nodes.AddRange(nodes.ToArray());
@@ -123,7 +122,7 @@ namespace Plugin.WcfClient.UI
 				case ElementType.Client:
 					break;
 				default:
-					throw new NotImplementedException(String.Format("Element with type {0} not implemented", row.ElementType));
+					throw new NotImplementedException($"Element with type '{row.ElementType}' not implemented");
 				}
 
 				yield return node;

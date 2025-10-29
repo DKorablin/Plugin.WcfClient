@@ -12,14 +12,14 @@ namespace Plugin.WcfClient.UI
 			 * private void OnWmGetObject(ref Message message)
 				int accessibleObjectId = (int)message.LParam; <- OverflowException
 			 */
-			return false;//В любом случае бросаем исключение выше
+			return false;//In any case, we throw the exception above
 			//return base.DisplayException(exception);
 		}
 
 		protected override void WndProc(ref Message m)
 		{
 			if(m.Msg == 61 && m.LParam.ToInt64() > Int32.MaxValue)
-				return;//HACK: В базовой сборке LParam (IntPtr) приводится к Int32, а в x64 он туда может не влезть
+				return;//HACK: In the base build, LParam (IntPtr) is cast to Int32, but in x64 it may not fit there.
 
 			base.WndProc(ref m);
 		}

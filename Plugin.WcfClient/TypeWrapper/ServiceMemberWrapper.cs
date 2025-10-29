@@ -68,12 +68,11 @@ namespace Plugin.WcfClient.Parser
 
 		public String ValidateAndCanonicalize(String value, out String errorMessage)
 		{
-			Int32 num;
-			String text = this._type.ValidateAndCanonicalize(value, out num);
+			String text = this._type.ValidateAndCanonicalize(value, out Int32 _);
 			errorMessage = null;
 
 			if(text == null)
-				errorMessage = String.Format(CultureInfo.CurrentUICulture, "'{0}' is not valid value for this type", value);
+				errorMessage = $"'{value}' is not valid value for this type";
 			return text;
 		}
 	}

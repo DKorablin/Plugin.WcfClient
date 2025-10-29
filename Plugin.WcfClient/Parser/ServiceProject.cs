@@ -9,7 +9,7 @@ using Plugin.WcfClient.Bll;
 
 namespace Plugin.WcfClient.Parser
 {
-	/// <summary>Шина подключения к библиотеки сервиса</summary>
+	/// <summary>Service library connection bus</summary>
 	internal class ServiceProject
 	{
 		private const String CommandLineFormatString = "\"{0}\"";
@@ -20,7 +20,7 @@ namespace Plugin.WcfClient.Parser
 		
 		public Boolean IsWorking { get; set; }
 
-		/// <summary>Домен в который загружена сборка сервиса</summary>
+		/// <summary>Domain where the service assembly is loaded</summary>
 		public AppDomain ClientDomain { get; private set; }
 		
 		public ICollection<ClientEndpointInfo> Endpoints { get; private set; }
@@ -49,7 +49,7 @@ namespace Plugin.WcfClient.Parser
 				this.RegisterFileWatcher(info.ConfigFilePath);
 		}
 
-		/// <summary>Обновить конфигурацию сервиса</summary>
+		/// <summary>Update service configuration</summary>
 		public void RefreshConfig()
 		{
 			this.IsConfigChanged = false;
@@ -78,7 +78,7 @@ namespace Plugin.WcfClient.Parser
 				this.RegisterFileWatcher(this.Info.ConfigFilePath);
 		}
 
-		/// <summary>Удалить проект</summary>
+		/// <summary>Remove project</summary>
 		public void Remove()
 		{
 			this.CloseService();
@@ -98,17 +98,17 @@ namespace Plugin.WcfClient.Parser
 				ServiceAnalyzer.CopyConfigFile(text, this.Info.ConfigFilePath);
 		}
 
-		/// <summary>Запуск процесса конфигурирования WCF конфиг файла</summary>
+		/// <summary>Starting the process of configuring the WCF config file</summary>
 		/// <exception cref="FileNotFoundException">SVC Config editor not found</exception>
 		public void StartSvcConfigEditor()
 		{
 			this.Info.Plugin.Trace.TraceInformation("Opening {0} editor...", Path.GetFileName(this.Info.ConfigFilePath));
 			Process process = ToolingEnvironment.CreateProcess(
 				ToolingEnvironment.SvcConfigEditorPath,
-				String.Format(CultureInfo.CurrentUICulture, "\"{0}\"", this.Info.ConfigFilePath));
+				String.Format(CultureInfo.CurrentUICulture, CommandLineFormatString, this.Info.ConfigFilePath));
 		}
 
-		/// <summary>Закрываю сервис и все открытые ручки</summary>
+		/// <summary>Closing the service and all open handles</summary>
 		public void CloseService()
 		{
 			this.DeleteProxiesForEndpoints();
@@ -124,8 +124,8 @@ namespace Plugin.WcfClient.Parser
 				ConfigFileMappingManager.Instance.DeleteConfigFileMapping(this.Info.Row.Name);
 		}
 
-		/// <summary>Зарегистрировать мониторинг конфигурационного файла</summary>
-		/// <param name="filePath">Путь к файлу конфигурации</param>
+		/// <summary>Register configuration file monitoring</summary>
+		/// <param name="filePath">Path to the configuration file</param>
 		private void RegisterFileWatcher(String filePath)
 		{
 			if(this._configWatcher == null)
@@ -152,7 +152,7 @@ namespace Plugin.WcfClient.Parser
 						this.IsConfigChanged = true;
 						this.Info.Plugin.Trace.TraceInformation("Config file {0} updated", Path.GetFileName(this.Info.ConfigFilePath));
 
-						this.RefreshConfig();//TODO: Возможен IOException
+						this.RefreshConfig();//TODO: IOException possible
 					}
 				} finally
 				{
@@ -163,7 +163,7 @@ namespace Plugin.WcfClient.Parser
 		}
 
 		private void configWatcher_Disposed(Object sender, EventArgs e)
-			=> this._configWatcher = null;//TODO: При вызове SaveAsync(Object), _watcher оказывается уже Disposed. Поэтому приходится его пересоздавать
+			=> this._configWatcher = null;//TODO: When calling SaveAsync(Object), _watcher is already Disposed. Therefore, it has to be recreated.
 
 		private void CreateProxiesForEndpoints()
 		{
@@ -174,7 +174,7 @@ namespace Plugin.WcfClient.Parser
 		}
 
 		private void DeleteProjectFolder()
-			=> ExceptionUtility.InvokeFSAction(delegate { Directory.Delete(this.Info.ProjectPath, true); });
+			=> ExceptionUtility.InvokeFSAction(() => Directory.Delete(this.Info.ProjectPath, true));
 
 		private void DeleteProxiesForEndpoints()
 		{

@@ -20,10 +20,10 @@ namespace Plugin.WcfClient
 
 		internal IHostWindows HostWindows { get; }
 
-		/// <summary>Настройки для взаимодействия из хоста</summary>
+		/// <summary>Settings for interaction from the host</summary>
 		Object IPluginSettings.Settings => this.Settings;
 
-		/// <summary>Настройки для взаимодействия из плагина</summary>
+		/// <summary>Settings for interaction from the plugin</summary>
 		public PluginSettings Settings
 		{
 			get
@@ -38,7 +38,9 @@ namespace Plugin.WcfClient
 		}
 
 		private IMenuItem MenuTest { get; set; }
+
 		private IMenuItem MenuNetworkTest { get; set; }
+
 		private IMenuItem MenuWcfTest { get; set; }
 
 		private Dictionary<String, DockState> DocumentTypes
@@ -55,7 +57,7 @@ namespace Plugin.WcfClient
 			}
 		}
 
-		/// <summary>Открытый список проектов</summary>
+		/// <summary>Open list of projects</summary>
 		private List<ServiceProject> OpenedProjects
 			=> this._openedProjects ?? (this._openedProjects = new List<ServiceProject>());
 
@@ -118,17 +120,17 @@ namespace Plugin.WcfClient
 		private void OnServiceListChanged(SettingsDataSet.TreeRow row, ServiceListChangedEventArgs.ChangeStatus status)
 			=> this.ServiceListChanged?.Invoke(this, new ServiceListChangedEventArgs(row, status));
 
-		/// <summary>Получить информацию о открытом проекте</summary>
-		/// <param name="row">Ряд идентифицирующий открытый сервис</param>
-		/// <returns>Информацию о открытом сервисе</returns>
+		/// <summary>Get information about an open project</summary>
+		/// <param name="row">Row identifying the open service</param>
+		/// <returns>Information about the open service</returns>
 		internal ServiceProject GetOpenedProject(SettingsDataSet.TreeRow row)
-			=> this.OpenedProjects.FirstOrDefault(p => p.Info.Row == row);//Поиск по открытым сервисам
+		=> this.OpenedProjects.FirstOrDefault(p => p.Info.Row == row);//Search by open services
 
-		/// <summary>Получить информацию по открытому проекту исходя из идентификатора дерева</summary>
-		/// <param name="treeId">Идентификатор дерева</param>
-		/// <returns>Информация о открытом проекте</returns>
+		/// <summary>Get information about an open project based on the tree ID</summary>
+		/// <param name="treeId">Tree ID</param>
+		/// <returns>Information about the open project</returns>
 		internal ServiceProject GetOpenedProject(Int32 treeId)
-			=> this.OpenedProjects.FirstOrDefault(p => p.Info.Row.TreeId == treeId);
+		=> this.OpenedProjects.FirstOrDefault(p => p.Info.Row.TreeId == treeId);
 
 		internal void LoadService(AddServiceOutputs outputs)
 		{
@@ -161,32 +163,31 @@ namespace Plugin.WcfClient
 			this.Settings.ServiceSettings.Save();
 		}
 
-		/// <summary>Удалить сервис и его настройки</summary>
-		/// <param name="row">Ряд характеризующий настройку сервиса</param>
+		/// <summary>Delete a service and its settings</summary>
+		/// <param name="row">Row characterizing the service setting</param>
 		private void RemoveService(SettingsDataSet.TreeRow row)
 		{
-			ServiceProject project = this.GetOpenedProject(row);//Поиск по открытым сервисам
+			ServiceProject project = this.GetOpenedProject(row);//Search open services
 
-			if(project == null)//Если проект не открыт, то только удалить его из настроек
+			if(project == null)//If the project is not open, then only remove it from the settings
 				this.Settings.ServiceSettings.RemoveNode(row);
 			else
 			{
 				IWindow[] windows = this.HostWindows.Windows.ToArray();
 				for(Int32 loop = windows.Length - 1; loop >= 0; loop--)
-				{//Закрыть все открытые окна с проектом
+				{//Close all open windows with the project
 					IWindow wnd = windows[loop];
-					DocumentSvcTestMethod ctrl = wnd.Control as DocumentSvcTestMethod;
-					if(ctrl != null && ctrl.Settings.TreeId == row.TreeId)
+					if(wnd.Control is DocumentSvcTestMethod ctrl && ctrl.Settings.TreeId == row.TreeId)
 						wnd.Close();
 				}
 				this.OpenedProjects.Remove(project);
-				project.Remove();//Внутри произойдёт удаление из настроек
+				project.Remove();//This will remove the settings internally.
 			}
 		}
 
-		/// <summary>Добавить сервис</summary>
-		/// <param name="type">Тип добавляемого сервиса</param>
-		/// <param name="address">Адрес сервиса</param>
+		/// <summary>Add service</summary>
+		/// <param name="type">Type of service to add</param>
+		/// <param name="address">Service address</param>
 		internal void AddService(ServiceType type, String address)
 		{
 			SettingsDataSet.TreeRow row = this.Settings.ServiceSettings.ModifyTreeNode(null, null, ElementType.Client, address);
@@ -194,19 +195,19 @@ namespace Plugin.WcfClient
 			this.OnServiceListChanged(row, ServiceListChangedEventArgs.ChangeStatus.Added);
 		}
 
-		/// <summary>Выгрузить проект</summary>
-		/// <param name="row">Описатель проекта</param>
-		/// <returns>Результат выгрузки проекта</returns>
+		/// <summary>Unload project</summary>
+		/// <param name="row">Project descriptor</param>
+		/// <returns>Project unload result</returns>
 		internal Boolean UnloadService(SettingsDataSet.TreeRow row)
 		{
-			ServiceProject projct = this.OpenedProjects.FirstOrDefault(p => p.Info.Row == row);//Поиск по открытым проектам
-			if(projct != null)
+			ServiceProject project = this.OpenedProjects.FirstOrDefault(p => p.Info.Row == row);//Search open source projects
+			if(project != null)
 			{
-				projct.CloseService();
+				project.CloseService();
 				this.OnServiceListChanged(row, ServiceListChangedEventArgs.ChangeStatus.Unloaded);
-				this.OpenedProjects.Remove(projct);
+				this.OpenedProjects.Remove(project);
 			}
-			return projct != null;
+			return project != null;
 		}
 
 		internal void OnServicePropertiesChanged(SettingsDataSet.TreeRow row)

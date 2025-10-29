@@ -5,8 +5,8 @@ namespace Plugin.WcfClient.Parser
 {
 	internal class AddServiceOutputs
 	{
-		private List<String> _errors = new List<String>();
-		private List<ServiceProject> _projects = new List<ServiceProject>();
+		private readonly List<String> _errors = new List<String>();
+		private readonly List<ServiceProject> _projects = new List<ServiceProject>();
 		private Int32 succeedCount;
 
 		public Boolean Cancelled { get; set; }
