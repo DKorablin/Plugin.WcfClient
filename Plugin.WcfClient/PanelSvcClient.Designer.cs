@@ -1,6 +1,6 @@
 ﻿namespace Plugin.WcfClient
 {
-	partial class PanelSvcTestClient
+	partial class PanelSvcClient
 	{
 		/// <summary> 
 		/// Required designer variable.
@@ -31,7 +31,7 @@
 			this.components = new System.ComponentModel.Container();
 			System.Windows.Forms.ToolStrip tsMain;
 			System.Windows.Forms.ImageList ilServiceItem;
-			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PanelSvcTestClient));
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PanelSvcClient));
 			this.tsbnAdd = new System.Windows.Forms.ToolStripSplitButton();
 			this.tsmiAddClient = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiAddNode = new System.Windows.Forms.ToolStripMenuItem();
@@ -269,13 +269,13 @@
 			this.splitMain.TabIndex = 2;
 			this.splitMain.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.splitMain_MouseDoubleClick);
 			// 
-			// PanelSvcTestClient
+			// PanelSvcClient
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.Controls.Add(this.splitMain);
 			this.Controls.Add(tsMain);
-			this.Name = "PanelSvcTestClient";
+			this.Name = "PanelSvcClient";
 			this.Size = new System.Drawing.Size(177, 199);
 			tsMain.ResumeLayout(false);
 			tsMain.PerformLayout();

@@ -12,12 +12,12 @@ using SAL.Windows;
 
 namespace Plugin.WcfClient
 {
-	public partial class PanelSvcTestClient : UserControl
+	public partial class PanelSvcClient : UserControl
 	{
 		private PluginWindows Plugin => (PluginWindows)this.Window.Plugin;
 		private IWindow Window => (IWindow)base.Parent;
 
-		public PanelSvcTestClient()
+		public PanelSvcClient()
 		{
 			this.InitializeComponent();
 			gridSearch.TreeView = tvService;

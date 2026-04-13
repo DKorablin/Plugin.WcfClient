@@ -50,7 +50,7 @@ namespace Plugin.WcfClient
 				if(this._documentTypes == null)
 					this._documentTypes = new Dictionary<String, DockState>()
 					{
-						{ typeof(PanelSvcTestClient).ToString(), DockState.DockRightAutoHide },
+						{ typeof(PanelSvcClient).ToString(), DockState.DockRightAutoHide },
 						{ typeof(DocumentSvcTestMethod).ToString(), DockState.Document },
 					};
 				return this._documentTypes;
@@ -96,7 +96,7 @@ namespace Plugin.WcfClient
 
 			this.MenuWcfTest = this.MenuNetworkTest.Create("Service Test Client");
 			this.MenuWcfTest.Name = "Tools.Test.Network.ServiceTestClient";
-			this.MenuWcfTest.Click += (sender, e)=> { this.CreateWindow(typeof(PanelSvcTestClient).ToString(), true); };
+			this.MenuWcfTest.Click += (sender, e)=> { this.CreateWindow(typeof(PanelSvcClient).ToString(), true); };
 			this.MenuNetworkTest.Items.AddRange(new IMenuItem[] { this.MenuWcfTest, });
 			return true;
 		}
