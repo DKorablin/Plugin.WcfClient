@@ -69,6 +69,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <EmbeddedResource Include="..\WinForms.Shared\SearchGrid\SearchGrid.resx" Link="UI\SearchGrid.resx" />
+		<EmbeddedResource Include="..\WinForms.Shared\SearchGrid\SearchGrid.resx" Link="UI\SearchGrid.resx" >
+			<LogicalName>AlphaOmega.Windows.Forms.SearchGrid.resources</LogicalName>
+		</EmbeddedResource>
 	</ItemGroup>
 </Project>

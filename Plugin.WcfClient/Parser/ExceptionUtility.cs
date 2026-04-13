@@ -8,7 +8,7 @@ using System.Windows.Forms;
 namespace Plugin.WcfClient.Parser
 {
 	/// <summary>Exception handling utilities</summary>
-	internal class ExceptionUtility
+	internal static class ExceptionUtility
 	{
 		/// <summary>Perform a file system action and handle exceptions</summary>
 		/// <remarks>Handled exceptions: IOException, UnauthorizedAccessException</remarks>
