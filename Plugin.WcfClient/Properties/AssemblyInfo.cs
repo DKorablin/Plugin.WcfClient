@@ -5,7 +5,6 @@ using System.Runtime.InteropServices;
 [assembly: System.CLSCompliant(true)]
 
 [assembly: AssemblyDescription("WS\\WCF Client")]
-[assembly: AssemblyCopyright("Copyright © WcfClient authors Danila Korablin 2012-2025")]
 
 /*if $(ConfigurationName) == Release (
 ..\..\..\..\ILMerge.exe "/out:$(ProjectDir)..\bin\$(TargetFileName)" "$(TargetDir)$(TargetFileName)" "$(ProjectDir)Microsoft.VisualStudio.VirtualTreeGrid.dll" "/lib:..\..\..\SAL\bin"
