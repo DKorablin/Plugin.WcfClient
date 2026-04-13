@@ -52,9 +52,9 @@ namespace Plugin.WcfClient.Parser.Wcf
 			return null;
 		}
 
-		protected override Boolean GenerateProxyAndConfig(Int32 startProgressPosition, Int32 endProgressPostition, out String successMessage, out String errorMessage)
+		protected override Boolean GenerateProxyAndConfig(Int32 startProgressPosition, Int32 endProgressPosition, out String successMessage, out String errorMessage)
 		{
-			Boolean result = base.GenerateProxyAndConfig(startProgressPosition, endProgressPostition, out successMessage, out errorMessage);
+			Boolean result = base.GenerateProxyAndConfig(startProgressPosition, endProgressPosition, out successMessage, out errorMessage);
 
 			if(result)
 			{

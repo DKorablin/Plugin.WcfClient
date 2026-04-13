@@ -7,7 +7,7 @@ namespace Plugin.WcfClient.Parser
 	{
 		private readonly List<String> _errors = new List<String>();
 		private readonly List<ServiceProject> _projects = new List<ServiceProject>();
-		private Int32 succeedCount;
+		private Int32 _succeedCount;
 
 		public Boolean Cancelled { get; set; }
 
@@ -23,6 +23,6 @@ namespace Plugin.WcfClient.Parser
 			=> this._projects.Add(project);
 
 		internal void IncrementSucceedCount()
-			=> this.succeedCount++;
+			=> this._succeedCount++;
 	}
 }
