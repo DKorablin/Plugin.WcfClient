@@ -53,7 +53,7 @@
 		<PackageReference Include="System.ServiceModel.Primitives" Condition="'$(TargetFramework)'=='net8.0-windows'" />
 	</ItemGroup>
 	
-	<ItemGroup Condition="'$(TargetFramework)'=='net35'">
+	<ItemGroup Condition="'$(TargetFramework)'=='net48'">
 		<Reference Include="System.Configuration" />
 		<Reference Include="System.Data.DataSetExtensions" />
 		<Reference Include="System.ServiceModel" />

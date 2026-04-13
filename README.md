@@ -1,4 +1,4 @@
-# Windows Communication Foundation (WCF) and Web Service (WS) test client Test Client Plugin
+# Windows Communication Foundation (WCF) and Web Service (WS) Test Client Plugin
 [![Auto build](https://github.com/DKorablin/Plugin.WcfClient/actions/workflows/release.yml/badge.svg)](https://github.com/DKorablin/Plugin.WcfClient/releases/latest)
 
 A plugin for the SAL host application that provides an interactive test client for both **WCF** (Windows Communication Foundation) and classic **ASMX** Web Services. Services can be added by URL or from a local WSDL file; method parameters are edited visually, invoked on demand, and the full test project is persisted for later reuse.
