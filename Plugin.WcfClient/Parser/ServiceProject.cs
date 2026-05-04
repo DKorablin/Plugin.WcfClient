@@ -102,7 +102,7 @@ namespace Plugin.WcfClient.Parser
 		/// <exception cref="FileNotFoundException">SVC Config editor not found</exception>
 		public void StartSvcConfigEditor()
 		{
-			this.Info.Plugin.Trace.TraceInformation("Opening {0} editor...", Path.GetFileName(this.Info.ConfigFilePath));
+			this.Info.Plugin.Trace.TraceEvent(TraceEventType.Information, 0,"Opening {0} editor...", Path.GetFileName(this.Info.ConfigFilePath));
 			Process process = ToolingEnvironment.CreateProcess(
 				ToolingEnvironment.SvcConfigEditorPath,
 				String.Format(CultureInfo.CurrentUICulture, CommandLineFormatString, this.Info.ConfigFilePath));
@@ -150,7 +150,7 @@ namespace Plugin.WcfClient.Parser
 					{
 						this._configWatcher.EnableRaisingEvents = false;
 						this.IsConfigChanged = true;
-						this.Info.Plugin.Trace.TraceInformation("Config file {0} updated", Path.GetFileName(this.Info.ConfigFilePath));
+						this.Info.Plugin.Trace.TraceEvent(TraceEventType.Information, 0, "Config file {0} updated", Path.GetFileName(this.Info.ConfigFilePath));
 
 						this.RefreshConfig();//TODO: IOException possible
 					}
