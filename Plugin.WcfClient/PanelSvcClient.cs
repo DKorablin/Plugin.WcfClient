@@ -14,7 +14,7 @@ namespace Plugin.WcfClient
 {
 	public partial class PanelSvcClient : UserControl
 	{
-		private PluginWindows Plugin => (PluginWindows)this.Window.Plugin;
+		private PluginWindows Plugin => (PluginWindows)this.Window.Plugin.Instance;
 		private IWindow Window => (IWindow)base.Parent;
 
 		public PanelSvcClient()
@@ -101,7 +101,7 @@ namespace Plugin.WcfClient
 				else//WS
 					project = (ServiceProject)node.Parent.Tag;*/
 
-				IWindow window = this.Plugin.CreateWindow(
+				_ = this.Plugin.CreateWindow(
 					typeof(DocumentSvcTestMethod).ToString(),
 					true,
 					new DocumentSvcTestMethodSettings()

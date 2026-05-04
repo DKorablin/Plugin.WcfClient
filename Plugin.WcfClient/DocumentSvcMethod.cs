@@ -18,7 +18,7 @@ namespace Plugin.WcfClient
 		private DocumentSvcTestMethodSettings _settings;
 		private readonly Stopwatch _swElapsed = new Stopwatch();
 
-		internal PluginWindows Plugin => (PluginWindows)this.Window.Plugin;
+		internal PluginWindows Plugin => (PluginWindows)this.Window.Plugin.Instance;
 
 		private IWindow Window => (IWindow)base.Parent;
 
